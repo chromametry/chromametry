@@ -1,0 +1,8 @@
+title: "Chromametry"
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Nguyen
+    given-names: Huu Khanh
+version: 0.1.0
+date-released: 2026-02-07
+url: https://github.com/chromametry/chromametry
