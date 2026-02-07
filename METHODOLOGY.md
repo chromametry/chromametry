@@ -35,6 +35,8 @@ Specifically,
 
 $$
 S_j = \{ c_{j,0}, c_{j,1}, \dots, c_{j,N-1} \}, \qquad
+$$
+$$
 L^*_{j,0} < L^*_{j,1} < \dots < L^*_{j,N-1}
 $$
 
