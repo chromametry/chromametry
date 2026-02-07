@@ -34,12 +34,10 @@ Each color family $S_j$ is defined as a **monochromatic (single-hue ramp)** cons
 Specifically,
 
 $$
-S_j = \left\{ c_{j,0}, c_{j,1}, \dots, c_{j,N-1} \right\}
+S_j = \left\lbrace c_{j,0}, c_{j,1}, \dots, c_{j,N-1} \right\rbrace
 $$
 
-$$
-L^{*}_{j,0} < L^{*}_{j,1} < \dots < L^{*}_{j,N-1}
-$$
+Specifically, the colors in each family are arranged in order of **strictly increasing perceived lightness**, forming a monotonic lightness ramp from darkest to lightest.
 
 where there exists **exactly one base color** $C_{\text{base},j} \in S_j$ satisfying
 
@@ -193,10 +191,9 @@ $$
 
 where chroma and hue in CIELAB space are determined by
 
-$$
-C^* = \sqrt{a^{*2} + b^{*2}}, \qquad
-h = \operatorname{atan2}(b^*, a^*)
-$$
+$$C = \sqrt{a^{*2} + b^{*2}}$$
+
+$$h = \text{atan2}(b^{ * }, a^{ * })$$
 
 The hue-dependent correction functions are given by
 
@@ -246,8 +243,7 @@ $$
 At each step $i$, the maximum deviation within this range is
 
 $$
-\epsilon_i^{\max}
-=
+\epsilon_i^{\max}=
 \max\!\left(
 \left|\hat{L}_{\mathrm{EAL}}(i) - L_{\min}^{\text{fit}}\right|,
 \left|L_{\max}^{\text{fit}} - \hat{L}_{\mathrm{EAL}}(i)\right|
@@ -339,7 +335,7 @@ The reference value $C^*_{\mathrm{ref}}$ is determined based on the geometric ex
 
 Since the chroma function $C^* = \sqrt{a^{*2} + b^{*2}}$ is a convex function, its maximum value over sRGB space must lie at the vertices of the sRGB convex polyhedron. Calculation at color vertices confirms that the Blue Primary establishes the furthest chroma boundary:
 
-| Vertex (sRGB) | sRGB $(R,G,B)$ | CIELAB $(L^*, a^*, b^*)$ | $C^*$               |
+| Vertex (sRGB) | sRGB $(R,G,B)$ | CIELAB $(L^{ * }, a^{ * }, b^{ * })$ | $C^*$               |
 | :------------ | :------------- | :----------------------- | :------------------ |
 | Red           | $(1,0,0)$      | $(53.2, 80.1, 67.2)$     | $\approx 104.6$     |
 | Green         | $(0,1,0)$      | $(87.7, -86.2, 83.2)$    | $\approx 119.8$     |
@@ -351,7 +347,7 @@ Since the chroma function $C^* = \sqrt{a^{*2} + b^{*2}}$ is a convex function, i
 Therefore, the reference value is established as $C^*_{\mathrm{ref}} \approx 133.8$. Actual chroma is normalized to **perceptual chroma** scale ($C_{\mathrm{p}}$) by linear scaling:
 
 $$
-C_{\mathrm{p}} = C^*_{ab} \cdot \frac{C^*_{\mathrm{ref}}}{100} \approx C^*_{ab} \cdot 1.338
+C_{p} = C^{ * }_{ab} \cdot \frac{C^{ * }_{\mathrm{ref}}}{100} \approx C^{ * }_{ab} \cdot 1.338
 $$
 
 The normalization coefficient $1.338$ is applied to bring chroma values to a scale of $100$ corresponding to the physical limit of sRGB. This conversion helps synchronize the variation magnitude of chroma with other quantities (such as $L^*$), ensuring the Smoothness metric focuses on evaluating the shape of the color scale without being distorted by absolute chroma intensity.
