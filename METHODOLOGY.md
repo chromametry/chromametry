@@ -373,7 +373,9 @@ $$
 For normalization, determine the maximum possible error at each step based on palette amplitude:
 
 $$
-\epsilon_{\max,i} = \max\left\{ C_{\mathrm{ideal}}(i) - C_{\mathrm{p},\min}, C_{\mathrm{p},\max} - C_{\mathrm{ideal}}(i) \right\}
+\epsilon_{\max,i}
+= \max\{ C_{\mathrm{ideal}}(i) - C_{\mathrm{p},\min},
+         C_{\mathrm{p},\max} - C_{\mathrm{ideal}}(i) \}
 $$
 
 where $C_{\mathrm{p},\min} = \min_i C_{\mathrm{p},i}$ and $C_{\mathrm{p},\max} = \max_i C_{\mathrm{p},i}$. Then:
@@ -404,7 +406,7 @@ The **Hue Stability** metric evaluates the consistency of hue in a monochromatic
 Hue in CIELAB space is determined by
 
 $$
-h_i = \operatorname{atan2}(b^*_i, a^*_i)
+h_i = \{atan2}(b^*_i, a^*_i)
 $$
 
 Since hue is a periodic angular quantity, the hue sequence is **unwrapped** to remove discontinuities at $360^\circ$ and ensure continuity:
