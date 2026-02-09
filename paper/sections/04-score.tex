@@ -1,0 +1,38 @@
+\section{Composite Quality Score}
+
+To aggregate multiple quality metrics into a single scalar score without
+allowing strong dimensions to compensate for weak ones, the
+\textbf{geometric mean} is used instead of the arithmetic mean.
+The composite score is defined as
+\begin{equation}
+\mathrm{SCORE}
+=
+100 \cdot
+\left(
+\prod_{k=1}^{5} (M_k + \varepsilon)
+\right)^{1/5},
+\end{equation}
+where
+\[
+M_k \in \{\eta, \mathcal{L}, \mathcal{S}_C, \mathcal{H}, \mathcal{U}\}
+\]
+denote the five normalized component metrics, each bounded in $[0,1]$, and
+$\varepsilon = 10^{-6}$ is a small constant introduced solely to ensure
+numerical stability when any component metric approaches zero.
+
+The use of the geometric mean has several desirable properties:
+\begin{itemize}
+\item \textbf{Strong penalty for imbalance}: a single poor metric significantly
+reduces the overall score, preventing compensation by unrelated dimensions.
+\item \textbf{Encouragement of uniform quality} across accessibility,
+perceptual uniformity, and structural consistency criteria.
+\item \textbf{Scale invariance} with respect to the component metrics,
+preserving their relative contributions.
+\end{itemize}
+
+Since all component metrics are bounded in $[0,1]$, the resulting SCORE is
+guaranteed to lie in the interval $[0,100]$, enabling direct and intuitive
+comparison across different palette generation methods.
+
+Accordingly, SCORE reflects overall palette completeness rather than excellence
+in any single isolated attribute.

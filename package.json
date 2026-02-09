@@ -1,6 +1,6 @@
 {
   "name": "chromametry",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Web-accessible Color Palette Metrics",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -29,7 +29,7 @@
     "@atlaskit/tokens": "^10.0.1",
     "@material/material-color-utilities": "^0.3.0",
     "@types/node": "^25.2.0",
-    "sharp": "^0.34.5",
+    "chartjs-node-canvas": "^5.0.0",
     "tsup": "^8.5.0",
     "tsx": "^4.21.0",
     "typescript": "^5.8.3",

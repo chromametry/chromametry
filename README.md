@@ -2,7 +2,7 @@
 > A metrics framework for evaluating web-accessible sequential color palettes.
 
 
-![Web-accessible Palette Ranking](benchmarks/monochromatic/assets/web-accessible-palette-ranking.png)
+![Web-accessible Palette Ranking](paper/figures/web-accessible-palette-ranking.png)
 *Figure 1. Web-accessible Palette Ranking*
 
 ## Metric Definitions
@@ -12,7 +12,7 @@
 3.  **Chroma Smoothness:** Checks for artifacts and kinks in the saturation curve using Monotone Cubic Splines.
 4.  **Hue Stability:** Quantifies hue shift/drift across the lightness ramp.
 5.  **Spacing Uniformity:** Measures the consistency of color spacing (DeltaE 2000).  
->[Read full Methodology](https://github.com/chromametry/chromametry.git)
+>[Read full Methodology](https://github.com/chromametry/paper/paper.pdf)
 
 > All lightness, chroma, hue, and DeltaE2000 computations are performed in the CIELAB color space.
     
@@ -42,15 +42,14 @@ Comparison of popular design systems based on Chromametry metrics.
 
 ### Example: A Typical Report
 
-![IBM Carbon Color Palette](benchmarks/monochromatic/assets/ibm-carbon-color-palette.png)
-*Figure 2. IBM Carbon Color Palette.*
+![Adobe Spectrum Color Palette](paper/figures/adobe-spectrum-color-palette.png)
+*Figure 2. Adobe Spectrum Color Palette.*
 
-![IBM Carbon Palette Metrics](benchmarks/monochromatic/assets/ibm-carbon-palette-metrics.png)
-*Figure 3. IBM Carbon Palette Metrics.*
+![IBM Carbon Palette Metrics](paper/figures/adobe-spectrum-palette-metrics.png)
+*Figure 3. Adobe Spectrum Palette Metrics.*
 
-
-![IBM Carbon Palette Charts](benchmarks/monochromatic/assets/ibm-carbon-palette-charts.png)
-*Figure 4. IBM Carbon Palette Charts.*
+![IBM Carbon Palette Charts](paper/figures/adobe-spectrum-palette-charts.png)
+*Figure 4. Adobe Spectrum Palette Charts.*
 
 ## Benchmark result page
 

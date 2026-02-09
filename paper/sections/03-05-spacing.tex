@@ -1,0 +1,37 @@
+\subsection{Spacing Uniformity ($\mathcal{U}$)}
+
+Spacing between adjacent color steps is measured using the
+\textbf{CIEDE2000 color-difference metric}~\cite{luo2001}.
+For a sequential color scale of $N$ ordered steps
+$\{c_0, c_1, \dots, c_{N-1}\}$, differences are computed only between
+consecutive entries:
+\begin{equation}
+\delta_i = \Delta E_{00}(c_{i-1}, c_i),
+\qquad i = 1, \dots, N-1.
+\end{equation}
+
+An ideally spaced color scale exhibits approximately constant perceptual
+increments, i.e., $\delta_i \approx \delta_j$ for all $i,j$.
+To quantify relative dispersion of these increments independently of their
+absolute magnitude, spacing uniformity is evaluated using the
+\textbf{coefficient of variation (CV)}:
+\begin{equation}
+CV = \frac{\sigma(\{\delta_i\})}{\mu(\{\delta_i\})},
+\end{equation}
+where $\mu(\cdot)$ and $\sigma(\cdot)$ denote the mean and standard deviation
+of the set $\{\delta_i\}$, respectively. As a dimensionless quantity,
+$CV$ provides a scale-invariant measure of non-uniformity.
+
+Since $CV$ is unbounded above and inversely related to quality, it is mapped
+to a bounded score with intuitive directionality using the following
+monotonic transform:
+\begin{equation}
+\mathcal{U} = \frac{1}{1 + CV}.
+\end{equation}
+
+This definition ensures $\mathcal{U} \in (0,1]$, with
+$\mathcal{U} = 1$ corresponding to perfectly uniform spacing ($CV = 0$),
+and $\mathcal{U}$ decreasing monotonically as dispersion increases.
+
+A palette with uniform sampling along the color ramp therefore achieves
+$\mathcal{U}$ values close to unity.

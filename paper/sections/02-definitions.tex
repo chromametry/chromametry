@@ -1,0 +1,71 @@
+\section{Definitions and Standards}
+
+\subsection{Color Palette Structure}
+
+A palette $P$ comprises $n$ monochromatic families:
+\[
+P = \{ S_1, S_2, \dots, S_n \}.
+\]
+
+Each color family $S_j$ is a \emph{monochromatic ramp} consisting of $N$ lightness steps, generated from a single base color. Formally,
+\[
+S_j = \{ c_{j,0}, c_{j,1}, \dots, c_{j,N-1} \}.
+\]
+
+Colors within each family are arranged in a strictly monotonic order of perceived lightness, forming a one-dimensional lightness ramp. Within $S_j$, there exists a unique base color $C_{\text{base},j} \in S_j$ satisfying
+\[
+C_{\text{base},j} =
+\arg\max_{c_{j,i} \in S_j} C^*(c_{j,i}).
+\]
+
+This color possesses the maximum chroma in the range and serves as the representative hue for the entire family. By definition, $S_j$ is assumed to be the result of a fixed-hue interpolation where only lightness and its dependent chroma vary. This assumption ensures consistent reference quantities
+($L_{\text{base}}, h_{\text{base}}, C_{\text{base}}$)
+for all subsequent metrics.
+
+\subsection{WCAG Contrast Ratio}
+
+According to WCAG~2.1~\cite{wcag21}, the contrast ratio is defined based on relative luminance $Y \in [0,1]$:
+\[
+CR(c_1, c_2) =
+\frac{Y_1 + 0.05}{Y_2 + 0.05},
+\quad Y_1 \ge Y_2.
+\]
+
+Relative luminance is calculated as
+\[
+Y =
+0.2126\,R_{\text{linear}}
++ 0.7152\,G_{\text{linear}}
++ 0.0722\,B_{\text{linear}}.
+\]
+
+Standard contrast ratio thresholds include:
+\begin{itemize}
+  \item \textbf{3:1} for UI components and large text.
+  \item \textbf{4.5:1} for body text (AA standard).
+  \item \textbf{7:1} for enhanced readability (AAA).
+\end{itemize}
+
+This framework identifies the \textbf{4.5:1 threshold} as the primary benchmark for comparative evaluation.
+
+\subsection{Contrast Span}
+
+The \emph{Contrast Span} $K$ of a hue family is the minimum index distance that guarantees a contrast ratio $\ge 4.5{:}1$ for all color pairs:
+\[
+K =
+\min \left\{
+k \in \mathbb{N} :
+CR(c_i, c_{i+k}) \ge 4.5,
+\;\forall i \in [0, N-k-1]
+\right\}.
+\]
+
+For multi-family palettes, the global span is defined as
+\[
+K_{\text{palette}} = \max_{j=1}^{n} K_j.
+\]
+
+This metric enables predictable accessibility: designers can ensure compliant contrast by selecting colors separated by at least $K$ steps without requiring runtime calculations.
+As illustrated in Table~\ref{tab:contrast-span}, a fixed span guarantees WCAG-compliant contrast across all valid index pairs.
+
+\input{tables/contrast-span}

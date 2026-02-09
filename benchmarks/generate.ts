@@ -1,6 +1,8 @@
+import { ChartJSNodeCanvas } from 'chartjs-node-canvas';
 import fs from "fs";
 import path from "path";
 import { pathToFileURL } from "url";
+import { chartsPNG } from "./charts-png.js";
 
 import { analyzeMonochromaticPalette, calcStatistics } from "../src/index.js";
 
@@ -65,11 +67,13 @@ async function generateMonochromaticPalettes() {
     // Save summary files
     fs.writeFileSync(path.join(OUTPUT_DIR, "data.json"), JSON.stringify(database, null, 2));
     fs.writeFileSync(path.join(OUTPUT_DIR, "data.js"), `window.BENCHMARK_DATA = ${JSON.stringify(database)};`);
+    return database
 }
 
 export async function generate() {
     try {
-        await generateMonochromaticPalettes();
+        const DATA = await generateMonochromaticPalettes();
+        await chartsPNG(DATA.items[0]);
         console.log(`\n✔ Benchmark complete`);
     } catch (error) {
         console.error(error);

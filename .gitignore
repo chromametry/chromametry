@@ -1,3 +1,14 @@
 node_modules/
 references/
 todo/
+
+# ===== Core LaTeX =====
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz

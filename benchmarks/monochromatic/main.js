@@ -1,3 +1,4 @@
+window.EXPORT_MODE = true
 const TARGET = 'wcag45';
 const DATA = window.BENCHMARK_DATA;
 DATA.items.sort((a, b) => b.score - a.score)
@@ -198,22 +199,22 @@ const backgroundGrid = (item) => {
     const scales = item.scales
     if (!Array.isArray(scales)) return '';
 
-    const cols = scales[0].colors.length + 1;
+    const cols = scales[0].colors.length;
 
 
     let h = `
         <div class="table-section">
-            <div class="table-caption">Contrast Map: Background Index + ${item.contrasts.wcag45.span} steps (WCAG 4.5:1). "X" indicates invalid background </div>
+          <div class="table-caption">Contrast Map: Background Index ± ${item.contrasts.wcag45.span} steps (WCAG 4.5:1). "X" indicates invalid background </div>
             <div class="color-grid" style="--cols:${cols}">
     `;
 
-    h += `<div class="color-grid-header">Steps</div>`;
+    //h += `<div class="color-grid-header">Steps</div>`;
     scales[0].colors.forEach((_, i) => {
         h += `<div class="color-grid-header">${i}</div>`;
     });
 
     scales.forEach(s => {
-        h += `<div class="color-grid-scale">${s.name}</div>`;
+       // h += `<div class="color-grid-scale">${s.name}</div>`;
 
         const steps = s.colors.length;
 
@@ -244,8 +245,7 @@ const metricTable = (scales) => {
         <div class="table-section">
             <div class="table-caption">Quality Metrics</div>
             <div class="metric-grid">
-                <div class="grid-header">Metrics</div>
-                <div class="grid-header">Base</div>
+                <div class="grid-header">Base Color</div>
                 <div class="grid-header">Span (3.0)</div>
                 <div class="grid-header">Span (4.5)</div>
                 <div class="grid-header">Span (7.0)</div>
@@ -258,8 +258,6 @@ const metricTable = (scales) => {
 
     scales.forEach(s => {
         h += `
-            <div class="grid-cell">${s.name}</div>
-
             <div class="grid-cell">
                 <div style="background:${s.baseColor};
                             width:40px;height:20px;border-radius:2px"></div>
@@ -326,11 +324,13 @@ const parallelChart = () => {
                 y: {
                     beginAtZero: false,
                     max: 100,
-                    grid: { color: '#f0f0f0' },font: { size: 11 }
+                    grid: { color: '#f0f0f0' }, font: { size: 11 }
                 },
-                x: { grid: { lineWidth: 2, color: '#ececec' },ticks: {
-                                font: { size: 12 }
-                            } }
+                x: {
+                    grid: { lineWidth: 2, color: '#ececec' }, ticks: {
+                        font: { size: 12 }
+                    }
+                }
             }
         }
     });
@@ -394,7 +394,6 @@ const detail = () => {
         ["lightness", "chroma", "hue", "cumDeltaE00"].forEach(e => {
             const wrapper = document.createElement('div');
             wrapper.className = 'chart-wrapper';
-            wrapper.style.height = "200px";
             const canvas = document.createElement('canvas');
             wrapper.appendChild(canvas);
             chartDiv.appendChild(wrapper);
@@ -409,7 +408,7 @@ const detail = () => {
                             ? s.shades.slice(1, -1).map((m, i) => ({ x: i + 1, y: m[e] }))
                             : s.shades.map((m, i) => ({ x: i, y: m[e] })),
                         borderColor: s.shades[s.baseIndex].hex,
-                        borderWidth: 1.5,
+                        borderWidth: 1,
                         fill: false,
                         pointRadius: 0
                     }))
@@ -432,11 +431,13 @@ const detail = () => {
                                 }
                             },
                             ticks: {
+                                padding: 10,
                                 font: { size: 11 }
                             }
                         },
                         x: {
                             ticks: {
+                                padding: 10,
                                 font: { size: 11 }
                             }
                         }
@@ -460,3 +461,10 @@ const init = () => {
 };
 
 document.addEventListener('DOMContentLoaded', init);
+
+function saveCanvas(canvas, filename) {
+    const a = document.createElement('a');
+    a.href = canvas.toDataURL('image/png', 1.0);
+    a.download = filename;
+    a.click();
+}

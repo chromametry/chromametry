@@ -1,0 +1,97 @@
+\subsection{Hue Stability ($\mathcal{H}$)}
+
+The \textbf{Hue Stability} metric evaluates the consistency of hue in a monochromatic
+color scale as lightness varies. A palette is considered stable if hue fluctuates
+minimally around a reference color rather than drifting toward other hues.
+
+\subsubsection{Hue Representation and Periodicity Handling}
+
+Hue in CIELAB space is determined by
+\begin{equation}
+h_i = \mathrm{atan2}(b^*_i, a^*_i).
+\end{equation}
+
+Since hue is a periodic angular quantity, the hue sequence is \textbf{unwrapped}
+to remove discontinuities at $360^\circ$ and ensure continuity:
+\begin{equation}
+h^{\mathrm{unwrap}}_i =
+h^{\mathrm{unwrap}}_{i-1} + \Delta h_i,
+\qquad
+\Delta h_i \in (-180^\circ, 180^\circ].
+\end{equation}
+
+This unwrapping ensures that hue deviations reflect actual shifts rather than
+artifacts from angular periodicity.
+
+\subsubsection{Reference Color and Hue Deviation}
+
+The reference hue $h_{\mathrm{base}}$ is chosen as the hue of the
+\textbf{color with maximum chroma} in the palette, as this typically represents
+the dominant hue identity.
+
+The angular distance between each step and the reference color is defined as
+\begin{equation}
+d_i =
+\min\!\left(
+|h_i - h_{\mathrm{base}}|,
+\; 360^\circ - |h_i - h_{\mathrm{base}}|
+\right),
+\end{equation}
+where $d_i \in [0, 180^\circ]$ represents the hue deviation at step $i$.
+
+\subsubsection{Normalization by Worst-Case Linear Drift}
+
+For normalization, a conservative worst-case scenario is defined in which hue
+drifts linearly from the reference hue toward its complementary hue. Although hue
+values are unwrapped to ensure numerical continuity, hue distance remains bounded
+by $180^\circ$, which represents the maximum distinguishable angular deviation in
+circular hue space.
+
+The maximum deviation at step $i$ in this scenario is
+\begin{equation}
+d^{\max}_i = 180^\circ \cdot \frac{i}{N - 1}.
+\end{equation}
+
+This value serves as the \textbf{theoretical upper bound} for hue drift at each
+position.
+
+\subsubsection{Hue Stability Metric Definition}
+
+The root mean square error of hue deviation is computed as
+\begin{equation}
+RMSE =
+\sqrt{
+\frac{1}{N}
+\sum_{i=0}^{N-1} d_i^2
+}.
+\end{equation}
+
+The corresponding worst-case error is
+\begin{equation}
+RMSE_{\max} =
+\sqrt{
+\frac{1}{N}
+\sum_{i=0}^{N-1} \left(d^{\max}_i\right)^2
+}.
+\end{equation}
+
+The \textbf{Hue Stability} metric is defined by
+\begin{equation}
+\mathcal{H} =
+\max\!\left(
+0,\;
+1 - \frac{RMSE}{RMSE_{\max}}
+\right).
+\end{equation}
+
+\subsubsection{Interpretation}
+
+\begin{itemize}
+  \item $\mathcal{H} \approx 1$: Hue remains stable around the reference color
+  throughout the palette.
+  \item $\mathcal{H} \to 0$: Strong hue drift approaching the worst-case linear
+  scenario.
+\end{itemize}
+
+This metric is independent of lightness and chroma, measuring only the
+\textbf{geometric stability of hue} in color space.

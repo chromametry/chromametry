@@ -1,0 +1,157 @@
+\subsection{Lightness Linearity ($\mathcal{L}$)}
+
+The \textbf{Lightness Linearity} metric evaluates the degree to which
+\emph{perceptual} lightness progression in a palette follows a linear
+trend with step index. Unlike pure $L^*$, lightness is affected by the
+Helmholtz--Kohlrausch effect~\cite{high2023}, where high-chroma colors
+are perceived as lighter than achromatic colors with the same $L^*$.
+
+\subsubsection{Equivalent Achromatic Lightness}
+
+To compensate for this effect, we use \textbf{Equivalent Achromatic
+Lightness (EAL)} according to High et al.~\cite{high2023}:
+
+\[
+L_{\mathrm{EAL}} =
+L^* + \bigl(f_{BY}(h) + f_R(h)\bigr)\, C^*
+\]
+
+where chroma and hue in CIELAB space are determined by
+
+\[
+C = \sqrt{a^{*2} + b^{*2}}
+\]
+
+\[
+h = \operatorname{atan2}(b^*, a^*)
+\]
+
+The hue-dependent correction functions are given by
+
+\[
+f_{BY}(h) =
+0.1644 \left|
+\sin\!\left(\frac{h - 90^\circ}{2}\right)
+\right| + 0.0603
+\]
+
+\[
+f_R(h) =
+\begin{cases}
+0.1307 \, |\cos(h)| + 0.0060,
+& h \in [0^\circ, 90^\circ] \cup [270^\circ, 360^\circ],\\
+0,
+& \text{otherwise}.
+\end{cases}
+\]
+
+\subsubsection{Linear Regression by Step Index}
+
+For a hue family of $N$ colors ordered by \textbf{monotonic lightness
+progression} (either strictly increasing or strictly decreasing), let
+$L_{\mathrm{EAL},i}$ denote the EAL value at step $i$.
+A linear model is fitted using \textbf{ordinary least squares}:
+
+\[
+\hat{L}_{\mathrm{EAL}}(i) = \alpha i + \beta,
+\qquad i = 0, \dots, N-1.
+\]
+
+Here, the sign of $\alpha$ implicitly captures the direction of
+progression: $\alpha > 0$ corresponds to increasing lightness, while
+$\alpha < 0$ corresponds to decreasing lightness.
+
+The root mean square error is computed as
+
+\[
+RMSE =
+\sqrt{
+\frac{1}{N}
+\sum_{i=0}^{N-1}
+\bigl(
+L_{\mathrm{EAL},i} -
+\hat{L}_{\mathrm{EAL}}(i)
+\bigr)^2
+}.
+\]
+
+\subsubsection{Normalization by Fitted Range}
+
+To normalize error independently of absolute lightness magnitude and
+progression direction, error is normalized by the
+\textbf{extremal values of the fitted line}:
+
+\[
+L_{\min}^{\text{fit}} =
+\min\!\bigl(
+\hat{L}_{\mathrm{EAL}}(0),\;
+\hat{L}_{\mathrm{EAL}}(N-1)
+\bigr),
+\qquad
+L_{\max}^{\text{fit}} =
+\max\!\bigl(
+\hat{L}_{\mathrm{EAL}}(0),\;
+\hat{L}_{\mathrm{EAL}}(N-1)
+\bigr).
+\]
+
+At each step $i$, the maximum allowable deviation within this fitted
+range is
+
+\[
+\epsilon_i^{\max} =
+\max\!\left(
+\left|
+\hat{L}_{\mathrm{EAL}}(i) - L_{\min}^{\text{fit}}
+\right|,
+\left|
+L_{\max}^{\text{fit}} - \hat{L}_{\mathrm{EAL}}(i)
+\right|
+\right).
+\]
+
+From this, the maximum normalized error is defined as
+
+\[
+RMSE_{\max} =
+\sqrt{
+\frac{1}{N}
+\sum_{i=0}^{N-1}
+\bigl(
+\epsilon_i^{\max}
+\bigr)^2
+}.
+\]
+
+This normalization constrains the metric to the envelope of the fitted
+linear model and is invariant to whether the palette progresses from
+dark-to-light or light-to-dark, ensuring score stability independent of
+absolute position or direction on the $L^*$ axis.
+
+\subsubsection{Metric Definition}
+
+The \textbf{Lightness Linearity} metric is defined by
+
+\[
+\mathcal{L} =
+\max\!\left(
+0,\;
+1 - \frac{RMSE}{RMSE_{\max}}
+\right).
+\]
+
+The value $\mathcal{L} \in [0,1]$ approaches 1 when lightness progression
+closely follows a linear trend; strong local fluctuations or
+non-linearity will decrease the score.
+
+In degenerate cases where the fitted line magnitude is negligible
+(palette nearly flat in lightness), the metric is conventionally set to
+$\mathcal{L} = 1$.
+
+\subsubsection{Interpretation}
+
+This metric evaluates \textbf{consistency of lightness progression}
+rather than purely geometric $L^*$. Using EAL allows $\mathcal{L}$ to
+more accurately reflect users' visual perception, especially for
+high-chroma palettes where the Helmholtz--Kohlrausch effect plays a
+significant role.

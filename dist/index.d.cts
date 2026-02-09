@@ -12,12 +12,12 @@ declare const toLightnessEAL: (lab: number[]) => number;
 declare const fromLightnessEAL: (brightness: number, lab: number[]) => number;
 /** Convert LCH to CIELAB coordinates. */
 declare const lchToLab: (lch: number[]) => number[];
-/** Convert linear RGB to CIELAB (D50). */
+/** Convert linear sRGB to CIELAB (D65) */
 declare const rgbToLab: (rgb: number[]) => number[];
+/** Convert CIELAB (D65) to linear sRGB */
+declare const labToRgb: (lab: number[]) => number[];
 /** Convert CIELAB to LCH coordinates. */
 declare const labToLch: (lab: number[]) => number[];
-/** Convert CIELAB (D50) to linear RGB. */
-declare const labToRgb: (lab: number[]) => number[];
 /** Calculate color difference using CIEDE2000 formula. */
 declare const calcDeltaE2000: (lab1: number[], lab2: number[]) => number;
 /** Find the Hex color with the highest Chroma in a list. */

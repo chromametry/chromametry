@@ -1,0 +1,64 @@
+\subsection{Contrast Efficiency ($\eta$)}
+\label{subsec:contrast-efficiency}
+
+Contrast Efficiency evaluates the economy of index separation required to satisfy accessibility constraints. To establish an ideal upper bound for accessibility, this framework references a \textbf{neutral gray ramp} ($a^* = 0, b^* = 0$).
+
+The choice of an achromatic scale is motivated by its inherent stability: neutral colors provide the most direct mapping between relative luminance $Y$ and perceived lightness $L^*$, as they are unaffected by the Helmholtz--Kohlrausch effect—where high chroma increases perceived brightness despite constant luminance~\cite{high2023}. Furthermore, neutral scales occupy the achromatic axis of the color gamut, minimizing non-linearities induced by gamut mapping constraints common in highly saturated hues.
+
+In this ideal achromatic case, $L^*$ is related to relative luminance $Y \in [0,1]$ by the CIE 1976 transform~\cite{iso11664}:
+
+\[
+L^*(Y) =
+\begin{cases}
+116\,Y^{1/3} - 16, & Y > \left(\frac{6}{29}\right)^3 \\
+116 \left(\frac{29}{6}\right)^2 Y + 16, & Y \le \left(\frac{6}{29}\right)^3
+\end{cases}
+\]
+
+Applying the WCAG 4.5:1 boundary conditions:
+\begin{itemize}
+\item For $Y_{\min}=0$ (black background), the required $Y_{\text{text}} = 0.175 \Rightarrow L^* \approx 48.9$.
+\item For $Y_{\max}=1$ (white background), the required $Y_{\text{text}} \approx 0.183 \Rightarrow L^* \approx 49.9$.
+\end{itemize}
+
+Accordingly, the conservative lightness threshold is defined as
+\[
+L^*_{\text{target}} \approx 49.9.
+\]
+
+Since the CIELAB lightness axis spans $[0,100]$, this corresponds to a normalized lightness ratio
+\[
+\lambda = \frac{L^*_{\text{target}}}{100} \approx 0.50.
+\]
+
+Although the exact luminance-derived ratio yields $\lambda \approx 0.49$, this work adopts a rounded value $\lambda = 0.50$ to avoid false numerical precision and to maintain symmetry along the CIELAB lightness axis.
+
+For a palette with $N$ discrete steps, the \textbf{ideal density} is defined as:
+\[
+D_{\text{ideal}} = \lambda \cdot \frac{N-1}{N}
+\]
+
+For practical design guidance, the corresponding \textbf{ideal contrast span} is:
+\[
+K_{\text{ideal}} = \lceil \lambda \cdot (N-1) \rceil
+\]
+
+Note that $D_{\text{ideal}}$ is used for metric calculation to ensure smooth behavior, while $K_{\text{ideal}}$ serves as a discrete design target. For example, with $N=12$:
+\begin{itemize}
+\item $D_{\text{ideal}} = 0.5 \times \frac{11}{12} \approx 0.458$
+\item $K_{\text{ideal}} = \lceil 5.5 \rceil = 6$
+\end{itemize}
+
+This formulation ensures smooth metric behavior across different palette sizes and eliminates the aliasing effects inherent in ceiling-based calculations. As $N \to \infty$, $D_{\text{ideal}} \to \lambda = 0.5$.
+
+Let $D$ be the actual contrast density, where $K$ is the measured contrast span. Contrast Efficiency $\eta$ is defined by:
+\[
+\eta =
+\begin{cases}
+1, & D \le D_{\text{ideal}} \\
+0, & D \ge 1.0 \\
+1 - \dfrac{D - D_{\text{ideal}}}{1.0 - D_{\text{ideal}}}, & \text{otherwise}
+\end{cases}
+\]
+
+\input{tables/contrast-ideal}

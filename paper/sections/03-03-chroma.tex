@@ -1,0 +1,139 @@
+\subsection{Chroma Smoothness ($\mathcal{S}_C$)}
+\label{subsec:chroma-smoothness}
+
+\subsubsection{Theoretical Background: Zeileis et al. (2009) Power Function Model~\cite{zeileis2009}}
+
+Zeileis et al.~\cite{zeileis2009} propose a power-function-based parameterization to control the rate of chroma
+and lightness variation along a sequential color scale, improving contrast distribution.
+Using a \emph{normalized continuous position} $t \in [0,1]$, the model is defined as
+\begin{equation}
+\begin{cases}
+H(t) = H_2 - t\,(H_1 - H_2), \\
+C(t) = C_{\max} - t^{p_1}\,(C_{\max} - C_{\min}), \\
+L(t) = L_{\max} - t^{p_2}\,(L_{\max} - L_{\min}),
+\end{cases}
+\end{equation}
+where $H_1, H_2$ are hue values at the two ends of the scale;
+$C_{\max}, C_{\min}$ and $L_{\max}, L_{\min}$ are chroma and lightness bounds; and
+$p_1, p_2 > 0$ control the curvature of chroma and lightness variation.
+
+\subsubsection{Derivative Discontinuity and Kink Artifacts}
+
+Although the single power-function model guarantees monotonicity, applying it to sequential
+palettes with \emph{maximum chroma near the center} typically requires piecewise definitions
+(dark-to-peak and peak-to-light). The chroma derivative is
+\begin{equation}
+\frac{dC}{dt}
+=
+- p_1\, t^{p_1-1}\,(C_{\max} - C_{\min}).
+\end{equation}
+
+When parameters differ across the two segments, the first derivative becomes discontinuous at
+the peak position $t_{\mathrm{peak}}$:
+\begin{equation}
+\lim_{t \to t_{\mathrm{peak}}^-} \frac{dC}{dt}
+\neq
+\lim_{t \to t_{\mathrm{peak}}^+} \frac{dC}{dt}.
+\end{equation}
+
+This lack of $C^1$ continuity produces a sharp chroma cusp, which can induce visible artifacts
+(Mach bands) due to the human visual system’s sensitivity to first-derivative luminance changes~\cite{mach1865}.
+This motivates the use of \emph{monotonic cubic splines}~\cite{fritsch1980}, which allow enforcing a zero
+derivative at the chroma peak while preserving global monotonicity.
+
+\subsubsection{Chroma in CIELAB Space}
+
+Chroma in CIELAB space is computed as
+\begin{equation}
+C^* = \sqrt{a^{*2} + b^{*2}} .
+\end{equation}
+While $C^*$ is not perceptually uniform, it provides a device-independent chroma magnitude
+suitable for relative comparison when properly normalized.
+
+\subsubsection{Reference Chroma Standard ($C^*_{\mathrm{ref}}$)}
+
+To stabilize chroma magnitude across palettes, chroma is first normalized by the maximum
+chroma within the palette and subsequently rescaled into a fixed reference frame derived
+from the sRGB gamut extremum in CIELAB space.
+
+Let $C^*_i$ denote the CIELAB chroma of step $i$, and define
+\begin{equation}
+C^*_{\max} = \max_i C^*_i .
+\end{equation}
+The rescaled chroma used for smoothness evaluation is
+\begin{equation}
+\tilde C_i = \frac{C^*_i}{C^*_{\max}} \cdot C^*_{\mathrm{ref}} .
+\end{equation}
+
+Evaluating primary and secondary vertices of the sRGB cube shows that the maximum chroma
+occurs at the blue primary, yielding
+\begin{equation}
+C^*_{\mathrm{ref}} \approx 133.8 .
+\end{equation}
+
+\subsubsection{Ideal Chroma Trajectory}
+
+An ideal chroma trajectory is assumed to increase monotonically from the palette start,
+reach a single maximum, and then decrease monotonically toward the end.
+For a discrete palette of $N$ colors indexed by $i = 0,\dots,N-1$, the ideal trajectory
+$C_{\mathrm{ideal}}(i)$ is constructed using a \emph{monotonic cubic spline}~\cite{fritsch1980}
+passing through three anchors:
+\begin{itemize}
+\item $(0, C_0)$ — start chroma,
+\item $(i_{\mathrm{peak}}, \tilde C_{\max})$ — maximum chroma,
+\item $(N-1, C_{N-1})$ — end chroma.
+\end{itemize}
+This avoids polynomial oscillation (Runge’s phenomenon)~\cite{epperson1987} and enforces smooth,
+monotonic chroma variation.
+
+\subsubsection{Smoothness Metric Definition}
+
+Deviation from the ideal trajectory is measured using root mean square error:
+\begin{equation}
+RMSE =
+\sqrt{
+\frac{1}{N}
+\sum_{i=0}^{N-1}
+\left(\tilde C_i - C_{\mathrm{ideal}}(i)\right)^2
+}.
+\end{equation}
+
+The maximum deviation envelope is defined as
+\begin{equation}
+\epsilon_{\max,i}
+=
+\max\!\left(
+C_{\mathrm{ideal}}(i) - \tilde C_{\min},
+\tilde C_{\max} - C_{\mathrm{ideal}}(i)
+\right),
+\end{equation}
+where
+$\tilde C_{\min} = \min_i \tilde C_i$ and
+$\tilde C_{\max} = \max_i \tilde C_i$.
+
+The maximum achievable error is
+\begin{equation}
+RMSE_{\max} =
+\sqrt{
+\frac{1}{N}
+\sum_{i=0}^{N-1}
+\epsilon_{\max,i}^2
+}.
+\end{equation}
+
+The \emph{Chroma Smoothness} metric is defined as
+\begin{equation}
+\mathcal{S}_C
+=
+\max\!\left(
+0,\;
+1 - \frac{RMSE}{RMSE_{\max}}
+\right).
+\end{equation}
+
+\subsubsection{Interpretation}
+
+$\mathcal{S}_C \approx 1$ indicates smooth chroma progression closely matching the ideal
+trajectory, while $\mathcal{S}_C \to 0$ reflects strong chroma oscillation or derivative
+discontinuities. For achromatic or near-achromatic palettes where $C^*_{\max} \approx 0$,
+chroma smoothness is defined as maximal, reflecting the absence of chroma variation.

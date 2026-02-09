@@ -1,0 +1,34 @@
+\section{Conclusion}
+
+This work introduces a unified quantitative framework for evaluating the
+quality of sequential monochromatic color palettes, grounded in the CIELAB
+color space and motivated by both perceptual uniformity and accessibility
+requirements. Five complementary metrics are proposed, covering contrast
+efficiency under WCAG~4.5:1 constraints, lightness linearity, chroma
+smoothness, hue stability, and perceptual spacing uniformity. Each metric
+captures a distinct structural or perceptual property and is normalized to
+enable consistent aggregation.
+
+Through large-scale benchmarking of widely used industry design systems, the
+framework reveals systematic differences in how palettes allocate lightness
+range, distribute perceptual steps, and preserve hue identity. In particular,
+the analysis identifies contrast span $K$ as a previously under-formalized
+but critical parameter, with empirical results indicating that spans close to
+$(N-1)/2$ maximize accessibility efficiency while preserving usable color
+density. These findings demonstrate that many high-quality palettes converge
+toward similar structural ratios, despite differing design origins.
+
+The proposed composite score, based on geometric aggregation, enables
+objective comparison without allowing compensation between weak and strong
+dimensions, thereby reflecting overall palette completeness rather than
+isolated excellence. As a result, the framework supports reproducible
+benchmarking, automated palette validation, and optimization-driven color
+system design.
+
+This study focuses on monochromatic sequential color ramps and adopts the
+CIELAB color space as a unified evaluation domain, ensuring direct
+compatibility with the CIEDE2000 color-difference metric used for perceptual
+uniformity assessment. Future work will extend the framework to diverging and
+multivariate palettes, and investigate how analogous metric formulations may
+be adapted to alternative perceptually uniform color spaces (e.g., CAM02-UCS
+or CAM16) while preserving cross-space comparability.

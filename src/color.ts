@@ -81,29 +81,61 @@ export const lchToLab = (lch: number[]): number[] => {
     return [L, C * Math.cos(hRad), C * Math.sin(hRad)];
 };
 
-/** Convert linear RGB to CIELAB (D50). */
+/** Convert linear sRGB to CIELAB (D65) */
 export const rgbToLab = (rgb: number[]): number[] => {
     const [r, g, b] = rgb;
-    const D65_TO_D50 = [
-        [1.0479298, 0.0229469, -0.0501922],
-        [0.0296278, 0.9904345, -0.0170738],
-        [0.0296278, 0.9904345, -0.0170738] // Note: fixed repeat indices from original if any
+
+    // sRGB → XYZ (D65)
+    const x = 0.4124564 * r + 0.3575761 * g + 0.1804375 * b;
+    const y = 0.2126729 * r + 0.7151522 * g + 0.0721750 * b;
+    const z = 0.0193339 * r + 0.1191920 * g + 0.9503041 * b;
+
+    // D65 reference white
+    const Xn = 0.95047;
+    const Yn = 1.00000;
+    const Zn = 1.08883;
+
+    const f = (t: number) =>
+        t > 0.008856 ? Math.cbrt(t) : (7.787 * t + 16 / 116);
+
+    const fx = f(x / Xn);
+    const fy = f(y / Yn);
+    const fz = f(z / Zn);
+
+    return [
+        116 * fy - 16,
+        500 * (fx - fy),
+        200 * (fy - fz),
     ];
-
-    let x = 0.4124564 * r + 0.3575761 * g + 0.1804375 * b;
-    let y = 0.2126729 * r + 0.7151522 * g + 0.0721750 * b;
-    let z = 0.0193339 * r + 0.1191920 * g + 0.9503041 * b;
-
-    const xd = 1.0479298 * x + 0.0229469 * y - 0.0501922 * z;
-    const yd = 0.0296278 * x + 0.9904345 * y - 0.0170738 * z;
-    const zd = -0.0092430 * x + 0.0150552 * y + 0.7518743 * z;
-
-    const f = (t: number) => (t > 0.008856 ? Math.cbrt(t) : 7.787 * t + 16 / 116);
-    const fx = f(xd / 0.96422), fy = f(yd / 1.00000), fz = f(zd / 0.82521);
-
-    return [116 * fy - 16, 500 * (fx - fy), 200 * (fy - fz)];
 };
 
+/** Convert CIELAB (D65) to linear sRGB */
+export const labToRgb = (lab: number[]): number[] => {
+    const [L, a, b] = lab;
+
+    const fy = (L + 16) / 116;
+    const fx = a / 500 + fy;
+    const fz = fy - b / 200;
+
+    const fInv = (t: number) =>
+        t ** 3 > 0.008856 ? t ** 3 : (t - 16 / 116) / 7.787;
+
+    // D65 reference white
+    const Xn = 0.95047;
+    const Yn = 1.00000;
+    const Zn = 1.08883;
+
+    const x = fInv(fx) * Xn;
+    const y = fInv(fy) * Yn;
+    const z = fInv(fz) * Zn;
+
+    // XYZ (D65) → sRGB
+    return [
+        3.2404542 * x - 1.5371385 * y - 0.4985314 * z,
+        -0.9692660 * x + 1.8760108 * y + 0.0415560 * z,
+        0.0556434 * x - 0.2040259 * y + 1.0572252 * z,
+    ];
+};
 
 /** Convert CIELAB to LCH coordinates. */
 export const labToLch = (lab: number[]): number[] => {
@@ -117,27 +149,6 @@ export const labToLch = (lab: number[]): number[] => {
 
     return [L, C, hDeg];
 };
-/** Convert CIELAB (D50) to linear RGB. */
-export const labToRgb = (lab: number[]): number[] => {
-    const [L, a, b] = lab;
-    const fy = (L + 16) / 116;
-    const fx = a / 500 + fy;
-    const fz = fy - b / 200;
-
-    const fInv = (t: number) => (t > 0.2068965 ? t ** 3 : (t - 16 / 116) / 7.787);
-    const xd = fInv(fx) * 0.96422, yd = fInv(fy) * 1.00000, zd = fInv(fz) * 0.82521;
-
-    const x = 0.9555766 * xd - 0.0230393 * yd + 0.0631636 * zd;
-    const y = -0.0282895 * xd + 1.0099416 * yd + 0.0210077 * zd;
-    const z = 0.0122982 * xd - 0.0204830 * yd + 1.3299098 * zd;
-
-    return [
-        3.2404542 * x - 1.5371385 * y - 0.4985314 * z,
-        -0.9692660 * x + 1.8760108 * y + 0.0415560 * z,
-        0.0556434 * x - 0.2040259 * y + 1.0572252 * z
-    ];
-};
-
 /** Calculate color difference using CIEDE2000 formula. */
 export const calcDeltaE2000 = (lab1: number[], lab2: number[]): number => {
     const [L1, a1, b1] = lab1, [L2, a2, b2] = lab2;

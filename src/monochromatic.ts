@@ -49,7 +49,7 @@ export const analyzeMonochromatic = (colors: string[], name?: string, stepNames?
 
     const hueStability = calcHueStability(shades.map(m => m.hue).slice(1, -1), shades[baseIndex].hue);
     const contrasts = getMonochromaticContrasts(shades);
-    
+
     const metrics: MonochromaticMetrics = {
         lightnessLinearity: calcLightnessLinearity(shades.map(m => m.lightness)),
         chromaSmoothness: calcChromaSmoothness(shades.map(m => m.chroma)),
@@ -171,9 +171,12 @@ export function calcHueStability(values: number[], ref: number): number {
 export const calcChromaSmoothness = (C: number[]): number => {
     const n = C.length;
     if (n < 3) return 1;
-
-    const normC = C.map(c => c * 133.8);
-    const cMin = Math.min(...normC), cMax = Math.max(...normC);
+    const C_REF = 133.8;
+    const C_MAX = Math.max(...C);
+    if (C_MAX <= 1e-2) return 1;
+    const normC = C.map(c => (c / C_MAX) * C_REF);
+    const cMin = Math.min(...normC),
+        cMax = Math.max(...normC);
 
     const maxIdx = normC.findIndex(c => c === cMax);
     const spline = createMonotone([[0, normC[0]], [maxIdx, cMax], [n - 1, normC[n - 1]]]);
@@ -222,10 +225,9 @@ export const calcContrastEfficiency = (span: number, steps: number): number => {
 
     /**
      * WCAG 4.5:1 threshold mapped to CIELAB L* range (0-100).
-     * L*(0.175) ≈ 48.9, normalized to 0.489.
      * This represents the physical minimum lightness range required.
      */
-    const LAMBDA = 0.489;
+    const LAMBDA = 0.5;
 
     // Actual density of the palette (0 to 1)
     const density = span / steps;

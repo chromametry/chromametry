@@ -1,0 +1,132 @@
+\section{Experimental Evaluation}
+
+This section reports quantitative evaluation results for \textbf{11 widely used
+design systems}, serving as a benchmark for the proposed metric framework
+when applied to real-world monochromatic color ramps.
+
+An interactive online report containing all benchmark data and visualizations
+is available at:
+\begin{quote}
+\url{https://chromametry.github.io/chromametry/benchmarks/monochromatic}
+\end{quote}
+
+\subsection{Quantitative Analysis Results}
+
+Table~\ref{tab:benchmark} summarizes the measured quality metrics across
+all evaluated design systems. Clear differentiation is observed across both
+individual metric dimensions and composite scores, indicating substantial
+variation in how existing design systems balance accessibility, uniformity, and
+structural consistency.
+
+\input{tables/benchmark}
+
+Several trends emerge from these results. Design systems that tightly control
+contrast span and lightness progression (e.g., IBM Carbon and Adobe Spectrum)
+achieve consistently high scores across most dimensions. In contrast, systems
+with large span values or uneven spacing exhibit reduced contrast efficiency
+and spacing uniformity, which significantly impacts the composite score due to
+the use of geometric aggregation.
+
+\begin{quote}
+\textbf{Note.} Design systems such as Bootstrap, Google Material~3, Apple Human
+Interface Guidelines, and Fluent UI are excluded from this evaluation, as they
+primarily define discrete semantic color tokens rather than algorithmically
+constructed sequential color ramps.
+\end{quote}
+
+\subsection{Example: A Typical Report}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/adobe-spectrum-color-palette.png}
+\caption{Adobe Spectrum Color Palette. Cell value = Background Index $\pm 9$ steps (WCAG 4.5:1).}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/adobe-spectrum-palette-metrics.png}
+\caption{Adobe Spectrum Palette Metrics.}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/adobe-spectrum-chart-lightness.png}
+\caption{Adobe Spectrum Lightness Chart.}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/adobe-spectrum-chart-chroma.png}
+\caption{Adobe Spectrum Chroma Chart.}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/adobe-spectrum-chart-hue.png}
+\caption{Adobe Spectrum Hue Chart.}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/adobe-spectrum-chart-cumDeltaE00.png}
+\caption{Adobe Spectrum Cumilatiive DeltaE2000 Chart.}
+\end{figure}
+
+The contrast span value $K$ is taken directly from measured \emph{Span}.
+Observed density $D$ is determined by
+\begin{equation}
+D = \frac{K}{N - 1},
+\end{equation}
+where $N$ is the number of palette steps.
+
+\input{tables/contrast-evaluation}
+
+This table shows that design systems achieving high efficiency all have low
+density, while palettes with excessively wide span lead to wasted lightness
+space and are strongly penalized by metric $\eta$.
+
+Thus, contrast span $K$ is observed consistently across popular industry
+palettes, though previously not systematically identified or exploited. With
+these results, users can select color pairs for background and text with
+distance $K$ without requiring runtime verification.
+
+\subsection{Discussion}
+
+\subsubsection{High Score Group (Score $>$ 85)}
+
+IBM Carbon, Adobe Spectrum, and USWDS maintain consistently high indicators
+across all aspects.
+\begin{itemize}
+\item \textbf{Observation:} High Contrast Efficiency ($\eta > 0.9$) and
+Lightness Linearity ($\mathcal{L} > 0.93$).
+\item \textbf{Analysis:} Span distance $K$ maintains optimal ratio to total
+steps $N$, ensuring high density of WCAG-compliant color pairs.
+\end{itemize}
+
+\subsubsection{Medium Score Group (75--85)}
+
+Tailwind CSS and Ant Design show disparities among component indicators.
+\begin{itemize}
+\item \textbf{Observation:} High Chroma Smoothness
+($\mathcal{S}_C > 0.84$) but lower Contrast Efficiency.
+\item \textbf{Analysis:} Large span relative to $N$ reduces simultaneous
+usability of color pairs.
+\end{itemize}
+
+\subsubsection{Low Score Group ($<$ 75)}
+
+Material UI (v4) and Shopify Polaris record the lowest scores.
+\begin{itemize}
+\item \textbf{Observation:} Low Spacing Uniformity ($\mathcal{U} < 0.6$) and
+Lightness Linearity.
+\item \textbf{Analysis:} Non-uniform step spacing and non-linear lightness
+progression.
+\end{itemize}
+
+\subsection{Experimental Conclusions}
+
+Benchmark data confirms the framework’s ability to classify palettes based on
+physical and mathematical characteristics. Results suggest that using an even
+number of steps with contrast span $\approx (N-1)/2$ yields favorable usability
+properties, where every color can serve as background and a corresponding text
+color always exists satisfying WCAG~4.5:1.
