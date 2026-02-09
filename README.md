@@ -12,7 +12,9 @@
 3.  **Chroma Smoothness:** Checks for artifacts and kinks in the saturation curve using Monotone Cubic Splines.
 4.  **Hue Stability:** Quantifies hue shift/drift across the lightness ramp.
 5.  **Spacing Uniformity:** Measures the consistency of color spacing (DeltaE 2000).  
->[Read full Methodology](https://github.com/chromametry/paper/paper.pdf)
+
+
+>[Read full paper](paper/paper.pdf)
 
 > All lightness, chroma, hue, and DeltaE2000 computations are performed in the CIELAB color space.
     
@@ -20,19 +22,20 @@
 
 Comparison of popular design systems based on Chromametry metrics.
 
-| Rank  | Design System              | Steps | Span (K) | Contrast Efficiency | Lightness Linearity | Chroma Smoothness | Hue Stability | Spacing Uniformity | **SCORE** |
-| :---: | :------------------------- | :---: | :--------: | :-----------------: | :-----------------: | :---------------: | :-----------: | :----------------: | :-------: |
-|   🥇   | **IBM Carbon**             |  12   |     6      |        0.906        |        0.932        |       0.864       |     0.930     |       0.794        | **88.36** |
-|   🥈   | **Adobe Spectrum**         |  18   |     9      |        0.929        |        0.935        |       0.871       |     0.917     |       0.775        | **88.33** |
-|   🥉   | **U.S. Web Design System** |  12   |     6      |        0.906        |        0.936        |       0.805       |     0.942     |       0.801        | **87.58** |
-|   4   | Salesforce Lightning 2     |  14   |     7      |        0.916        |        0.921        |       0.839       |     0.938     |       0.712        | **86.06** |
-|   5   | GitHub Primer Brand        |  12   |     6      |        0.906        |        0.926        |       0.838       |     0.946     |       0.685        | **85.43** |
-|   6   | Atlassian                  |  14   |     8      |        0.785        |        0.897        |       0.914       |     0.950     |       0.714        | **84.72** |
-|   7   | Tailwind CSS               |  13   |     8      |        0.774        |        0.873        |       0.849       |     0.918     |       0.677        | **81.37** |
-|   8   | Ant Design                 |  12   |     9      |        0.698        |        0.860        |       0.861       |     0.913     |       0.656        | **79.08** |
-|   9   | Material UI                |  12   |     11     |        0.554        |        0.797        |       0.773       |     0.931     |       0.550        | **70.56** |
-|  10   | Radix UI                   |  13   |     10     |        0.533        |        0.800        |       0.745       |     0.947     |       0.520        | **68.98** |
-|  11   | Shopify Polaris            |  17   |     15     |        0.349        |        0.730        |       0.642       |     0.920     |       0.467        | **58.78** |
+| Rank | Color Palette              | Ramp Count | Steps | Span (K) | Contrast Efficiency | Lightness Linearity | Chroma Smoothness | Hue Stability | Spacing Uniformity | **SCORE** |
+| :--: | :------------------------- | :--------: | :---: | :------: | :-----------------: | :-----------------: | :---------------: | :-----------: | :----------------: | :-------: |
+| 1 | Adobe Spectrum        | 10 | 18 | 9  | 0.947 | 0.9333 | 0.8786 | 0.9138 | 0.7722 | **88.67** |
+| 2 | IBM Carbon             | 12 | 12 | 6  | 0.923 | 0.9303 | 0.8688 | 0.9252 | 0.7919 | **88.62** |
+| 3 | U.S. Web Design System | 25 | 12 | 6  | 0.923 | 0.9359 | 0.8096 | 0.9380 | 0.7997 | **87.90** |
+| 4 | Salesforce Lightning 2     | 13 | 14 | 7  | 0.933 | 0.9187 | 0.8464 | 0.9372 | 0.7107 | **86.47** |
+| 5 | GitHub Primer Brand        | 13 | 12 | 6  | 0.923 | 0.9243 | 0.8405 | 0.9408 | 0.6841 | **85.67** |
+| 6 | Atlassian                  | 9  | 14 | 8  | 0.800 | 0.8964 | 0.9094 | 0.9465 | 0.7129 | **84.86** |
+| 7 | Tailwind CSS               | 18 | 13 | 8  | 0.789 | 0.8705 | 0.8565 | 0.9147 | 0.6780 | **81.74** |
+| 8 | Ant Design                 | 12 | 12 | 9  | 0.711 | 0.8586 | 0.8734 | 0.9276 | 0.6550 | **79.81** |
+| 9 | Material UI                | 19 | 12 | 11 | 0.565 | 0.7967 | 0.7861 | 0.9239 | 0.5500 | **70.95** |
+| 10 | Radix UI                  | 16 | 13 | 10 | 0.543 | 0.7979 | 0.7679 | 0.9481 | 0.5207 | **69.67** |
+| 11 | Shopify Polaris            | 12 | 17 | 15 | 0.356 | 0.7281 | 0.6892 | 0.9223 | 0.4667 | **59.86** |
+
 
 *Table 1. Benchmark ranking of design systems evaluated using Chromametry metrics.*
 
@@ -53,7 +56,7 @@ Comparison of popular design systems based on Chromametry metrics.
 
 ## Benchmark result page
 
-- Online Report : [Benchmark page](https://github.com/chromametry/benchmarks/monochromatic)
+- Online Report : [Benchmark page](https://chromametry.github.io/chromametry/benchmarks/monochromatic/)
 - Local `/benchmarks/monochromatic/output/index.html` (double click)
 
 ## Analyze Palettes
