@@ -8,9 +8,9 @@
   "type": "module",
   "scripts": {
     "test": "vitest",
-    "generate": "tsx benchmarks/generate.ts",
+    "generate": "tsx scripts/generate.ts",
     "build": "tsup",
-    "prepublishOnly": "npm run build && npm run test"
+    "prepublishOnly": "npm run test &&npm run build"
   },
   "keywords": [
     "color",

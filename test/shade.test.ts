@@ -1,25 +1,23 @@
-import { describe, it, expect } from 'vitest';
-import { getColorShade } from '../src/shade.js'; // Giữ nguyên đường dẫn của bạn
+import { describe, expect, it } from "vitest";
+import { Shade } from "../src/Shade.js";
 
-describe('Color Shade Initialization', () => {
-    it('should calculate correct metrics for white', () => {
-        const shade = getColorShade('#ffffff');
+describe("Shade", () => {
+    it("exposes the main derived color properties", () => {
+        const shade = new Shade("#ffffff");
+
+        expect(shade.hex).toBe("#ffffff");
         expect(shade.rgb).toEqual([1, 1, 1]);
-        expect(shade.luminance).toBeCloseTo(1);
+        expect(shade.chroma).toBe(0);
         expect(shade.wcag).toBe(1);
+        expect(shade.apca).toBe(0);
     });
 
-    it('should extract LCH components correctly', () => {
-        const shade = getColorShade('#ff0000');
-        // Check if chroma and hue are assigned from the correct LCH indices
-        expect(shade.chroma).toBe(shade.lch[1]);
-        expect(shade.hue).toBe(shade.lch[2]);
-    });
+    it("keeps hue and lightness available for chromatic colors", () => {
+        const shade = new Shade("#ff0000");
 
-    it('should initialize cumulative values to zero', () => {
-        const shade = getColorShade('#123456');
-        expect(shade.cumDeltaE00).toBe(0);
-        expect(shade.cumProtDeltaE00).toBe(0);
-        expect(shade.cumDeutDeltaE00).toBe(0);
+        expect(shade.lightness).toBeGreaterThan(0);
+        expect(shade.chroma).toBeGreaterThan(0);
+        expect(shade.hue).toBeGreaterThanOrEqual(0);
+        expect(shade.hue).toBeLessThan(360);
     });
 });

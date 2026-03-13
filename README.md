@@ -57,8 +57,8 @@ Comparison of popular design systems based on Chromametry metrics.
 
 ## Benchmark result page
 
-- Online Report : [Benchmark page](https://chromametry.github.io/chromametry/benchmarks/monochromatic/)
-- Local `/benchmarks/monochromatic/output/index.html` (double click)
+- Online Report : [Benchmark page](https://chromametry.github.io/chromametry/benchmark/)
+- Local `/benchmark/index.html` (double click)
 
 ## Analyze Palettes
 ### Installation
@@ -118,7 +118,7 @@ npm run generate
 ```
 
 ## Adding Custom Palettes to Benchmark
-Create a new .ts file in benchmarks/monochromatic/input/ (e.g., my-palette.ts).
+Create a new .ts file in benchmark/input/ (e.g., my-palette.ts).
 
 ```ts
 import { MonochromaticPaletteData } from "../../../src/index.js";
