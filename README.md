@@ -60,53 +60,137 @@ Comparison of popular design systems based on Chromametry metrics.
 - Online Report : [Benchmark page](https://chromametry.github.io/chromametry/benchmark/)
 - Local `/benchmark/index.html` (double click)
 
-## Analyze Palettes
+## API
 ### Installation
-**NPM Package:**
 ```bash
 npm install chromametry
-```
-**CDN (Browser) ESM:**
-```js
-<script type="module">
-  import { analyzeMonochromaticPalette } from 'https://esm.sh/chromametry';
-</script>
-  const result = Chromametry.analyzeMonochromaticPalette({ ... });
-</script>
-
-```
-
-**CDN (Browser) Global:**
-```js
-<script src="https://unpkg.com/chromametry/dist/index.global.js"></script>
-<script>
-  const result = Chromametry.analyzeMonochromaticPalette({ ... });
-</script>
 ```
 
 ### Usage
 ```ts
-import { analyzeMonochromaticPalette } from 'chromametry';
+import { Palette, Ramp, Shade } from "chromametry";
 
-// 1. Define your colors (must include white/black anchors for accurate scoring)
-const colors = {
-  yellow: ["#ffffff","#fcf4d6","#fddc69","#f1c21b","#d2a106","#b28600","#8e6a00","#684e00","#483700","#302400","#1c1500","#000000"],
-  orange: ["#ffffff","#fff2e8","#ffd9be","#ffb784","#ff832b","#eb6200","#ba4e00","#8a3800","#5e2900","#3e1a00","#231000","#000000"]
-};
+const blue = new Ramp([
+  "#ffffff",
+  "#eff6fb",
+  "#d9e8f6",
+  "#aacdec",
+  "#73b3e7",
+  "#4f97d1",
+  "#2378c3",
+  "#2c608a",
+  "#274863",
+  "#1f303e",
+  "#11181d",
+  "#000000",
+], "blue");
 
-// 2. Define step names corresponding to the array length
-const stepNames = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950,1000];
+console.log(blue.baseColor);
+console.log(blue.wcag[45].span);
+console.log(blue.metrics);
+console.log(blue.score);
 
-// 3. Run analysis
-const result = analyzeMonochromaticPalette({
-    name: "My Custom Brand",
-    stepNames: stepNames,
-    colors: colors
-});
+const brand = new Palette({
+  blue: blue.colors,
+  orange: [
+    "#ffffff",
+    "#fff2e8",
+    "#ffd9be",
+    "#ffb784",
+    "#ff832b",
+    "#eb6200",
+    "#ba4e00",
+    "#8a3800",
+    "#5e2900",
+    "#3e1a00",
+    "#231000",
+    "#000000",
+  ],
+}, "My Brand");
 
-console.log(result.metrics); 
-console.log(`System Score: ${result.score}`);
+console.log(brand.metrics);
+console.log(brand.wcag[45]);
+console.log(brand.score);
+
+const shade = new Shade("#2378c3");
+console.log(shade.lab);
+console.log(shade.chroma);
 ```
+
+### Browser
+**ESM**
+```html
+<script type="module">
+  import { Palette, Ramp } from "https://esm.sh/chromametry";
+
+  const ramp = new Ramp(["#ffffff", "#2378c3", "#000000"], "blue");
+  console.log(ramp.score);
+</script>
+```
+
+**Global**
+```html
+<script src="https://unpkg.com/chromametry/dist/index.global.js"></script>
+<script>
+  const ramp = new Chromametry.Ramp(["#ffffff", "#2378c3", "#000000"], "blue");
+  console.log(ramp.score);
+</script>
+```
+
+### Class Reference
+#### Shade
+| Property | Description |
+| :--- | :--- |
+| `constructor(hex)` | Create a shade from a hex color string. |
+| `hex` | Original hex color. |
+| `rgb` | Linear RGB values. |
+| `lab` | CIELAB coordinates. |
+| `lch` | LCH coordinates derived from LAB. |
+| `lightness` | Perceptual lightness with Helmholtz-Kohlrausch correction. |
+| `chroma` | Chroma of the shade. |
+| `hue` | Hue angle in degrees. |
+| `luminance` | Relative luminance used for contrast. |
+| `wcag` | WCAG contrast ratio against white. |
+| `apca` | APCA contrast value against white. |
+
+#### Ramp
+| Property | Description |
+| :--- | :--- |
+| `constructor(colors, name?)` | Create a sequential ramp from hex colors. |
+| `name` | Ramp name. |
+| `shades` | `Shade[]` built from the input colors. |
+| `colors` | Original ramp colors as hex strings. |
+| `steps` | Number of steps in the ramp. |
+| `peakChroma` | Hex color with the highest chroma in the inner ramp. |
+| `baseColor` | Base color used as the ramp anchor. |
+| `baseIndex` | Index of the base color. |
+| `wcag` | WCAG contrast spans for levels `30`, `45`, and `70`. |
+| `apca` | APCA contrast spans for levels `45`, `60`, and `75`. |
+| `contrasts` | Combined contrast object with `wcag` and `apca`. |
+| `deltaECurve` | Cumulative DeltaE curve across ramp steps. |
+| `unwrapHues` | Hue sequence with wrap-around discontinuities removed. |
+| `lightnessLinearity` | Linearity score of the lightness curve. |
+| `chromaSmoothness` | Smoothness score of the chroma curve. |
+| `spacingUniformity` | Uniformity score of DeltaE spacing. |
+| `hueStability` | Stability score of hue drift across the ramp. |
+| `contrastEfficiency` | Efficiency score of using contrast span for WCAG 4.5. |
+| `metrics` | Object containing the five ramp metrics. |
+| `score` | Composite ramp score. |
+
+#### Palette
+| Property | Description |
+| :--- | :--- |
+| `constructor(colors, name?)` | Create a palette from named ramps. |
+| `name` | Palette name. |
+| `ramps` | `Ramp[]` built from the input record. |
+| `colors` | Original palette colors as `Record<string, string[]>`. |
+| `steps` | Number of steps shared by the ramps. |
+| `direction` | Ramp direction inferred from the first ramp. |
+| `wcag` | Palette-level WCAG contrast spans aggregated across ramps. |
+| `apca` | Palette-level APCA contrast spans aggregated across ramps. |
+| `contrasts` | Combined contrast object with `wcag` and `apca`. |
+| `metrics` | Object containing the five palette metrics aggregated from ramps. |
+| `score` | Composite palette score. |
 
 ## Reproducing Benchmarks
 To run the benchmark generator locally:
@@ -121,7 +205,6 @@ npm run generate
 Create a new .ts file in benchmark/input/ (e.g., my-palette.ts).
 
 ```ts
-import { MonochromaticPaletteData } from "../../../src/index.js";
 import { red, volcano, gold } from '@ant-design/colors';
 
 // Define colors (imported or inline object)
@@ -132,16 +215,10 @@ for (let name in colors) {
     if (colors[name][0] !== "#ffffff") colors[name].unshift("#ffffff");
     if (colors[name][colors[name].length - 1] !== "#000000") colors[name].push("#000000");
 }
-
-const stepNames = Object.keys(Object.values(colors)[0]);
-
-const palette: MonochromaticPaletteData = {
-    name: "Ant Design",
-    stepNames, // string[]
-    colors     // Record<string, string[]> 
+export default {
+  name: "Ant Design",
+  colors,
 };
-
-export default palette;
 ```
 Then regenerate the report:
 ```bash
