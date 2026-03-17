@@ -68,7 +68,7 @@ npm install chromametry
 
 ### Usage
 ```ts
-import { Palette, Ramp, Shade } from "chromametry";
+import { Ramp, Swatch } from "chromametry";
 
 const blue = new Ramp([
   "#ffffff",
@@ -89,39 +89,18 @@ console.log(blue.baseColor);
 console.log(blue.wcag[45].span);
 console.log(blue.metrics);
 console.log(blue.score);
+console.log(blue.direction);
 
-const brand = new Palette({
-  blue: blue.colors,
-  orange: [
-    "#ffffff",
-    "#fff2e8",
-    "#ffd9be",
-    "#ffb784",
-    "#ff832b",
-    "#eb6200",
-    "#ba4e00",
-    "#8a3800",
-    "#5e2900",
-    "#3e1a00",
-    "#231000",
-    "#000000",
-  ],
-}, "My Brand");
-
-console.log(brand.metrics);
-console.log(brand.wcag[45]);
-console.log(brand.score);
-
-const shade = new Shade("#2378c3");
-console.log(shade.lab);
-console.log(shade.chroma);
+const swatch = new Swatch("#2378c3");
+console.log(swatch.lab);
+console.log(swatch.chroma);
 ```
 
 ### Browser
 **ESM**
 ```html
 <script type="module">
-  import { Palette, Ramp } from "https://esm.sh/chromametry";
+  import { Ramp } from "https://esm.sh/chromametry";
 
   const ramp = new Ramp(["#ffffff", "#2378c3", "#000000"], "blue");
   console.log(ramp.score);
@@ -138,16 +117,16 @@ console.log(shade.chroma);
 ```
 
 ### Class Reference
-#### Shade
+#### Swatch
 | Property | Description |
 | :--- | :--- |
-| `constructor(hex)` | Create a shade from a hex color string. |
+| `constructor(hex)` | Create a swatch from a hex color string. |
 | `hex` | Original hex color. |
 | `rgb` | Linear RGB values. |
 | `lab` | CIELAB coordinates. |
 | `lch` | LCH coordinates derived from LAB. |
 | `lightness` | Perceptual lightness with Helmholtz-Kohlrausch correction. |
-| `chroma` | Chroma of the shade. |
+| `chroma` | Chroma of the swatch. |
 | `hue` | Hue angle in degrees. |
 | `luminance` | Relative luminance used for contrast. |
 | `wcag` | WCAG contrast ratio against white. |
@@ -158,9 +137,10 @@ console.log(shade.chroma);
 | :--- | :--- |
 | `constructor(colors, name?)` | Create a sequential ramp from hex colors. |
 | `name` | Ramp name. |
-| `shades` | `Shade[]` built from the input colors. |
+| `swatches` | `Swatch[]` built from the input colors. |
 | `colors` | Original ramp colors as hex strings. |
 | `steps` | Number of steps in the ramp. |
+| `direction` | Whether the ramp trends from light to dark or dark to light. |
 | `peakChroma` | Hex color with the highest chroma in the inner ramp. |
 | `baseColor` | Base color used as the ramp anchor. |
 | `baseIndex` | Index of the base color. |
@@ -176,21 +156,6 @@ console.log(shade.chroma);
 | `contrastEfficiency` | Efficiency score of using contrast span for WCAG 4.5. |
 | `metrics` | Object containing the five ramp metrics. |
 | `score` | Composite ramp score. |
-
-#### Palette
-| Property | Description |
-| :--- | :--- |
-| `constructor(colors, name?)` | Create a palette from named ramps. |
-| `name` | Palette name. |
-| `ramps` | `Ramp[]` built from the input record. |
-| `colors` | Original palette colors as `Record<string, string[]>`. |
-| `steps` | Number of steps shared by the ramps. |
-| `direction` | Ramp direction inferred from the first ramp. |
-| `wcag` | Palette-level WCAG contrast spans aggregated across ramps. |
-| `apca` | Palette-level APCA contrast spans aggregated across ramps. |
-| `contrasts` | Combined contrast object with `wcag` and `apca`. |
-| `metrics` | Object containing the five palette metrics aggregated from ramps. |
-| `score` | Composite palette score. |
 
 ## Reproducing Benchmarks
 To run the benchmark generator locally:

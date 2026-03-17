@@ -35,7 +35,7 @@ declare const calcStatistics: (array: number[]) => {
 /** Calculate geometric mean score (0-100) from metrics. */
 declare const calcScore: (metrics: number[]) => number;
 
-declare class Shade {
+declare class Swatch {
     readonly hex: string;
     constructor(hex: string);
     get rgb(): number[];
@@ -58,12 +58,13 @@ type ContrastValue = {
 type WcagContrasts = Record<30 | 45 | 70, ContrastValue>;
 type ApcaContrasts = Record<45 | 60 | 75, ContrastValue>;
 declare class Ramp {
-    shades: Shade[];
+    swatches: Swatch[];
     name: string;
     constructor(colors?: string[], name?: string);
     get colors(): string[];
     get peakChroma(): string;
     get steps(): number;
+    get direction(): "lighten" | "darken";
     get baseColor(): string;
     get baseIndex(): number;
     get wcag(): WcagContrasts;
@@ -89,30 +90,4 @@ declare class Ramp {
     get score(): number;
 }
 
-type PaletteMetrics = {
-    contrastEfficiency: number;
-    lightnessLinearity: number;
-    chromaSmoothness: number;
-    hueStability: number;
-    spacingUniformity: number;
-};
-declare class Palette {
-    ramps: Ramp[];
-    name: string;
-    constructor(colors?: Record<string, string[]>, name?: string);
-    get colors(): {
-        [k: string]: string[];
-    };
-    get steps(): number;
-    get direction(): "lighten" | "darken";
-    get wcag(): WcagContrasts;
-    get apca(): ApcaContrasts;
-    get contrasts(): {
-        wcag: WcagContrasts;
-        apca: ApcaContrasts;
-    };
-    get metrics(): PaletteMetrics;
-    get score(): number;
-}
-
-export { type ApcaContrasts, type ContrastValue, Palette, type PaletteMetrics, Ramp, Shade, type WcagContrasts, calcDeltaE2000, calcScore, calcStatistics, createMonotone, cssRgbToRgb, fromLightnessEAL, hexToRgb, labToLch, labToRgb, lchToLab, rgbToHex, rgbToLab, rootMeanSquare, toLightnessEAL };
+export { type ApcaContrasts, type ContrastValue, Ramp, Swatch, type WcagContrasts, calcDeltaE2000, calcScore, calcStatistics, createMonotone, cssRgbToRgb, fromLightnessEAL, hexToRgb, labToLch, labToRgb, lchToLab, rgbToHex, rgbToLab, rootMeanSquare, toLightnessEAL };

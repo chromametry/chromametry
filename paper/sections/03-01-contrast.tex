@@ -62,3 +62,17 @@ Let $D$ be the actual contrast density, where $K$ is the measured contrast span.
 \]
 
 \input{tables/contrast-ideal}
+
+\subsubsection*{Extension to Other WCAG Thresholds}
+
+The same derivation can be applied to any WCAG contrast ratio $R$. The boundary conditions yield:
+\begin{itemize}
+\item \textbf{Black background} ($Y_{\min}=0$): the lightest text satisfying $\mathrm{CR} \ge R$ has $Y_{\text{text}} = 0.05(R-1)$, located at $L^*_{\text{black}} = L^*(0.05(R-1))$, whose distance from $L^*=0$ gives $\lambda_1 = L^*_{\text{black}} / 100$.
+\item \textbf{White background} ($Y_{\max}=1$): the darkest text satisfying $\mathrm{CR} \ge R$ has $Y_{\text{text}} = 1.05/R - 0.05$, located at $L^*_{\text{white}} = L^*(1.05/R - 0.05)$, whose distance from $L^*=100$ gives $\lambda_2 = (100 - L^*_{\text{white}}) / 100$.
+\end{itemize}
+
+Taking the conservative estimate $\lambda = \max(\lambda_1, \lambda_2)$, the same formula $K_{\text{ideal}} = \lceil \lambda \cdot (N-1) \rceil$ applies. Table~\ref{tab:lambda-by-cr} summarizes the derived $\lambda$ values for the four WCAG standard thresholds.
+
+\input{tables/lambda-by-cr}
+
+A notable structural property emerges: the $\lambda$ values for 3:1 and 7:1 are approximately complementary ($\lambda_{3:1} + \lambda_{7:1} \approx 1.00$), as are those for 2:1 and a ratio near 10:1. This symmetry arises because the two boundary conditions for ratio $R$ and its reciprocal role (light-on-dark vs.\ dark-on-light) swap the same luminance values $Y = 0.05(R-1)$ and $Y = 1.05/R - 0.05$, producing mirror-image distances along the $L^*$ axis.

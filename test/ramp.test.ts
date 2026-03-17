@@ -9,9 +9,11 @@ describe("Ramp", () => {
 
         expect(ramp.name).toBe("gray");
         expect(ramp.colors).toEqual(colors);
-        expect(ramp.shades).toHaveLength(colors.length);
+        expect(ramp.swatches).toHaveLength(colors.length);
         expect(ramp.steps).toBe(colors.length);
-        expect(ramp.baseIndex).toBe(2);
+        expect(ramp.direction).toBe("darken");
+        expect(ramp.baseColor).toBe(colors[3]);
+        expect(ramp.baseIndex).toBe(3);
     });
 
     it("exposes the main contrast and metric outputs", () => {

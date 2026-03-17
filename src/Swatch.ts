@@ -1,7 +1,8 @@
 import { hexToRgb, rgbToLab, labToLch } from "./utils.js";
 
-export class Shade {
+export class Swatch {
     readonly hex: string;
+
     constructor(hex: string) {
         this.hex = hex;
     }

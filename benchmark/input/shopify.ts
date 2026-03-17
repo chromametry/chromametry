@@ -1,4 +1,4 @@
-import { rgbToHex } from "../../../src/index.js";
+import { rgbToHex } from "../../src/index.js";
 
 var gray = {
     1: 'rgba(255, 255, 255, 1)',

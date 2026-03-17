@@ -1,5 +1,5 @@
-import { Shade } from "./Shade.js";
-import { calcDeltaE2000, calcScore, createMonotone } from "./utils.js";
+import { Swatch } from "./Swatch.js";
+import { calcDeltaE2000, calcScore, createMonotone, hexToRgb, rgbToLab } from "./utils.js";
 
 export type ContrastValue = {
     efficiency: number;
@@ -12,16 +12,16 @@ export type WcagContrasts = Record<30 | 45 | 70, ContrastValue>;
 export type ApcaContrasts = Record<45 | 60 | 75, ContrastValue>;
 
 export class Ramp {
-    shades: Shade[];
+    swatches: Swatch[];
     name: string;
 
     constructor(colors: string[] = [], name = "brand") {
-        this.shades = colors.map((hex) => new Shade(hex));
+        this.swatches = colors.map((hex) => new Swatch(hex));
         this.name = name;
     }
 
     get colors() {
-        return this.shades.map((shade) => shade.hex);
+        return this.swatches.map((swatch) => swatch.hex);
     }
 
     get peakChroma() {
@@ -30,18 +30,27 @@ export class Ramp {
         let bestChroma = -Infinity;
 
         for (const hex of colors) {
-            const shade = new Shade(hex);
-            if (shade.chroma > bestChroma) {
-                bestChroma = shade.chroma;
+            const swatch = new Swatch(hex);
+            if (swatch.chroma > bestChroma) {
+                bestChroma = swatch.chroma;
                 bestHex = hex;
             }
         }
+        if (bestChroma < 6) return this.colors[Math.ceil(this.steps / 2)];
 
         return bestHex;
     }
 
     get steps() {
         return this.colors.length;
+    }
+
+    get direction() {
+        if (this.colors.length === 0) return "lighten";
+
+        const firstLab = rgbToLab(hexToRgb(this.colors[0]));
+        const lastLab = rgbToLab(hexToRgb(this.colors[this.colors.length - 1]));
+        return firstLab[0] > lastLab[0] ? "darken" : "lighten";
     }
 
     get baseColor() {
@@ -55,8 +64,8 @@ export class Ramp {
     }
 
     get wcag(): WcagContrasts {
-        const shades = this.shades;
-        const total = shades.length;
+        const swatches = this.swatches;
+        const total = swatches.length;
         const maxGap = total - 1;
         const contrasts = {} as WcagContrasts;
 
@@ -69,8 +78,8 @@ export class Ramp {
                 let currentKMin = Infinity;
 
                 for (let i = 0; i < total - k; i++) {
-                    const l1 = shades[i].luminance;
-                    const l2 = shades[i + k].luminance;
+                    const l1 = swatches[i].luminance;
+                    const l2 = swatches[i + k].luminance;
                     const result = (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
                     if (result < currentKMin) currentKMin = result;
                 }
@@ -96,19 +105,22 @@ export class Ramp {
     }
 
     get apca(): ApcaContrasts {
-        const shades = this.shades;
-        const total = shades.length;
+        const swatches = this.swatches;
+        const total = swatches.length;
         const maxGap = total - 1;
         const contrasts = {} as ApcaContrasts;
 
         const apcaContrast = (yText: number, yBg: number) => {
-            const clamp = (y: number) => (y > 0.0005 ? y : y + Math.pow(0.0005 - y, 0.8));
-            const txt = clamp(yText);
-            const bg = clamp(yBg);
+            const Bc = 0.022, Bl = 1.414;
+            const txt = yText < Bc ? yText + Math.pow(Bc - yText, Bl) : yText;
+            const bg = yBg < Bc ? yBg + Math.pow(Bc - yBg, Bl) : yBg;
 
-            let lc = (Math.pow(txt, 0.56) - Math.pow(bg, 0.56)) * 100;
-            if (Math.abs(lc) < 0.1) return 0;
-            lc = lc > 0 ? (lc < 1 ? 0 : lc - 0.25) : (lc > -1 ? 0 : lc + 0.25);
+            let lc = bg >= txt
+                ? (Math.pow(bg, 0.56) - Math.pow(txt, 0.57)) * 114
+                : (Math.pow(bg, 0.65) - Math.pow(txt, 0.62)) * 114;
+
+            if (Math.abs(lc) < 10) return 0;
+            lc = lc > 0 ? lc - 2.7 : lc + 2.7;
             return Math.round(lc);
         };
 
@@ -121,10 +133,9 @@ export class Ramp {
                 let currentKMin = Infinity;
 
                 for (let i = 0; i < total - k; i++) {
-                    const result = Math.max(
-                        Math.abs(apcaContrast(shades[i + k].luminance, shades[i].luminance)),
-                        Math.abs(apcaContrast(shades[i].luminance, shades[i + k].luminance))
-                    );
+                    const bg = swatches[i].luminance > swatches[i + k].luminance ? swatches[i].luminance : swatches[i + k].luminance;
+                    const text = swatches[i].luminance > swatches[i + k].luminance ? swatches[i + k].luminance : swatches[i].luminance;
+                    const result = Math.abs(apcaContrast(text, bg));
                     if (result < currentKMin) currentKMin = result;
                 }
 
@@ -158,8 +169,8 @@ export class Ramp {
     get deltaECurve() {
         const values = [0];
 
-        for (let i = 1; i < this.shades.length; i++) {
-            const de00 = calcDeltaE2000(this.shades[i - 1].lab, this.shades[i].lab);
+        for (let i = 1; i < this.swatches.length; i++) {
+            const de00 = calcDeltaE2000(this.swatches[i - 1].lab, this.swatches[i].lab);
             values.push(values[i - 1] + de00);
         }
 
@@ -167,7 +178,7 @@ export class Ramp {
     }
 
     get unwrapHues() {
-        const hues = this.shades.map((shade) => shade.hue).slice(1, -1);
+        const hues = this.swatches.map((swatch) => swatch.hue).slice(1, -1);
         if (hues.length === 0) return [];
 
         const result = [hues[0]];
@@ -181,7 +192,7 @@ export class Ramp {
     }
 
     get lightnessLinearity() {
-        const values = this.shades.map((shade) => shade.lightness);
+        const values = this.swatches.map((swatch) => swatch.lightness);
         const n = values.length;
         if (n < 2) return 1;
 
@@ -219,7 +230,7 @@ export class Ramp {
     }
 
     get chromaSmoothness() {
-        const values = this.shades.map((shade) => shade.chroma);
+        const values = this.swatches.map((swatch) => swatch.chroma);
         const n = values.length;
         if (n < 3) return 1;
 
@@ -272,7 +283,7 @@ export class Ramp {
         const n = values.length;
         if (n < 2) return 1;
 
-        const ref = values[this.baseIndex - 1] ?? this.shades[this.baseIndex]?.hue ?? 0;
+        const ref = values[this.baseIndex - 1] ?? this.swatches[this.baseIndex]?.hue ?? 0;
 
         let sumSqError = 0;
         let sumSqMaxError = 0;

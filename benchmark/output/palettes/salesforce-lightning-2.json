@@ -32,7 +32,7 @@
   "ramps": [
     {
       "name": "neutral",
-      "baseIndex": 2,
+      "baseIndex": 7,
       "colors": [
         "#000000",
         "#181818",

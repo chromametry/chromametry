@@ -1766,7 +1766,7 @@
     },
     {
       "name": "grey",
-      "baseIndex": 2,
+      "baseIndex": 6,
       "colors": [
         "#ffffff",
         "#fafafa",

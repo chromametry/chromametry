@@ -1,0 +1,31 @@
+\begin{table}[t]
+\centering
+\caption{Derived $\lambda$ values and $K_{\text{ideal}}$ for standard WCAG contrast thresholds ($N = 18$).
+Boundary luminances $Y_{\text{black}}$ and $Y_{\text{white}}$ are the extremal text luminances satisfying
+$\mathrm{CR} \ge R$ against a pure black or white background, respectively.}
+\label{tab:lambda-by-cr}
+\begin{tabular}{c c c c c c c c}
+\hline
+$R$ & $Y_{\text{black}}$ & $L^*_{\text{black}}$ & $\lambda_1$ &
+      $Y_{\text{white}}$ & $L^*_{\text{white}}$ & $\lambda_2$ &
+      $\lambda$ (conservative) \\
+\hline
+2:1   & 0.050 & 26.7 & 0.267 & 0.475 & 74.5 & 0.255 & \textbf{0.27} \\
+3:1   & 0.100 & 37.8 & 0.378 & 0.300 & 61.7 & 0.383 & \textbf{0.38} \\
+4.5:1 & 0.175 & 48.9 & 0.489 & 0.183 & 49.9 & 0.501 & \textbf{0.50} \\
+7:1   & 0.300 & 61.7 & 0.617 & 0.100 & 37.8 & 0.622 & \textbf{0.62} \\
+\hline
+\end{tabular}
+
+\smallskip
+\begin{tabular}{c c c c}
+\hline
+$R$ & $\lambda$ & $K_{\text{ideal}} = \lceil \lambda \cdot (N-1) \rceil$ & $K_{\text{ideal}}$ ($N=18$) \\
+\hline
+2:1   & 0.27 & $\lceil 0.27 \times (N-1) \rceil$ & 5  \\
+3:1   & 0.38 & $\lceil 0.38 \times (N-1) \rceil$ & 7  \\
+4.5:1 & 0.50 & $\lceil 0.50 \times (N-1) \rceil$ & 9  \\
+7:1   & 0.62 & $\lceil 0.62 \times (N-1) \rceil$ & 11 \\
+\hline
+\end{tabular}
+\end{table}

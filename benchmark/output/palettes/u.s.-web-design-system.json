@@ -2276,7 +2276,7 @@
     },
     {
       "name": "gray",
-      "baseIndex": 2,
+      "baseIndex": 6,
       "colors": [
         "#ffffff",
         "#f0f0f0",
