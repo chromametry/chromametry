@@ -303,14 +303,13 @@ export class Ramp {
         const steps = this.steps;
         if (steps <= 1) return 1;
 
-        const lambda = 0.5;
-        const density = span / steps;
-        const targetDensity = lambda * ((steps - 1) / steps);
+        const lambda = 0.501;
+        const density = span / (steps - 1);
 
-        if (density <= targetDensity) return 1;
-        if (density >= 1.0) return 0;
+        if (density <= lambda) return 1;
+        if (density >= 1) return 0;
 
-        return (1 - density) / (1 - targetDensity);
+        return 1 - (density - lambda) / (1 - lambda);
     }
 
     get metrics() {

@@ -68,7 +68,7 @@ npm install chromametry
 
 ### Usage
 ```ts
-import { Ramp, Swatch } from "chromametry";
+import { Palette, Ramp, Swatch } from "chromametry";
 
 const blue = new Ramp([
   "#ffffff",
@@ -90,6 +90,15 @@ console.log(blue.wcag[45].span);
 console.log(blue.metrics);
 console.log(blue.score);
 console.log(blue.direction);
+
+const palette = new Palette({
+  blue: blue.colors,
+  gray: ["#ffffff", "#dfe1e2", "#71767a", "#000000"],
+}, "example");
+
+console.log(palette.contrastEfficiency);
+console.log(palette.lightnessLinearity);
+console.log(palette.score);
 
 const swatch = new Swatch("#2378c3");
 console.log(swatch.lab);
@@ -156,6 +165,23 @@ console.log(swatch.chroma);
 | `contrastEfficiency` | Efficiency score of using contrast span for WCAG 4.5. |
 | `metrics` | Object containing the five ramp metrics. |
 | `score` | Composite ramp score. |
+
+#### Palette
+| Property | Description |
+| :--- | :--- |
+| `constructor(colors, name?)` | Create a named palette from multiple ramps. |
+| `name` | Palette name. |
+| `ramps` | `Ramp[]` built from the input color map. |
+| `colors` | Original colors as `Record<string, string[]>`. |
+| `steps` | Number of steps in each ramp. |
+| `wcag` | Aggregated WCAG contrast spans across ramps. |
+| `apca` | Aggregated APCA contrast spans across ramps. |
+| `contrastEfficiency` | RMS aggregate of ramp contrast-efficiency scores. |
+| `lightnessLinearity` | RMS aggregate of ramp lightness-linearity scores. |
+| `chromaSmoothness` | RMS aggregate of ramp chroma-smoothness scores. |
+| `hueStability` | RMS aggregate of ramp hue-stability scores. |
+| `spacingUniformity` | RMS aggregate of ramp spacing-uniformity scores. |
+| `score` | Composite palette score. |
 
 ## Reproducing Benchmarks
 To run the benchmark generator locally:

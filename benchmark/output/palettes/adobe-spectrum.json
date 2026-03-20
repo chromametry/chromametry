@@ -2,13 +2,13 @@
   "steps": 18,
   "name": "Adobe Spectrum",
   "metrics": {
-    "contrastEfficiency": 0.9473684210526314,
+    "contrastEfficiency": 0.9430625957797948,
     "lightnessLinearity": 0.9332793723547254,
     "chromaSmoothness": 0.8786384592398753,
     "hueStability": 0.9137942657126203,
     "spacingUniformity": 0.7722350290957589
   },
-  "score": 88.67,
+  "score": 88.59,
   "wcag": {
     "30": {
       "target": 3,
@@ -58,9 +58,9 @@
         "chromaSmoothness": 0.866905579367059,
         "spacingUniformity": 0.7901895619668619,
         "hueStability": 0.8220668520243659,
-        "contrastEfficiency": 0.9473684210526315
+        "contrastEfficiency": 0.9430625957797949
       },
-      "score": 86.11,
+      "score": 86.03,
       "wcag": {
         "30": {
           "efficiency": 0.4117647058823529,
@@ -190,9 +190,9 @@
         "chromaSmoothness": 0.8210213211008618,
         "spacingUniformity": 0.7756893674856334,
         "hueStability": 0.9428028314227517,
-        "contrastEfficiency": 0.9473684210526315
+        "contrastEfficiency": 0.9430625957797949
       },
-      "score": 87.8,
+      "score": 87.72,
       "wcag": {
         "30": {
           "efficiency": 0.4117647058823529,
@@ -322,9 +322,9 @@
         "chromaSmoothness": 0.8971384829931396,
         "spacingUniformity": 0.7854161276800454,
         "hueStability": 0.8657578379184935,
-        "contrastEfficiency": 0.9473684210526315
+        "contrastEfficiency": 0.9430625957797949
       },
-      "score": 88.39,
+      "score": 88.31,
       "wcag": {
         "30": {
           "efficiency": 0.4117647058823529,
@@ -454,9 +454,9 @@
         "chromaSmoothness": 0.931652873165131,
         "spacingUniformity": 0.7343095120448322,
         "hueStability": 0.887065566990328,
-        "contrastEfficiency": 0.9473684210526315
+        "contrastEfficiency": 0.9430625957797949
       },
-      "score": 88.8,
+      "score": 88.72,
       "wcag": {
         "30": {
           "efficiency": 0.4117647058823529,
@@ -586,9 +586,9 @@
         "chromaSmoothness": 0.8616535631285319,
         "spacingUniformity": 0.8152902406052255,
         "hueStability": 0.9005019741222234,
-        "contrastEfficiency": 0.9473684210526315
+        "contrastEfficiency": 0.9430625957797949
       },
-      "score": 89.45,
+      "score": 89.37,
       "wcag": {
         "30": {
           "efficiency": 0.4117647058823529,
@@ -718,9 +718,9 @@
         "chromaSmoothness": 0.8394362213075209,
         "spacingUniformity": 0.8481335549575975,
         "hueStability": 0.7847806829812776,
-        "contrastEfficiency": 0.9473684210526315
+        "contrastEfficiency": 0.9430625957797949
       },
-      "score": 87.19,
+      "score": 87.11,
       "wcag": {
         "30": {
           "efficiency": 0.4117647058823529,
@@ -850,9 +850,9 @@
         "chromaSmoothness": 0.8887681677624325,
         "spacingUniformity": 0.6694518807361004,
         "hueStability": 0.9868025530175975,
-        "contrastEfficiency": 0.9473684210526315
+        "contrastEfficiency": 0.9430625957797949
       },
-      "score": 86.47,
+      "score": 86.39,
       "wcag": {
         "30": {
           "efficiency": 0.4117647058823529,
@@ -982,9 +982,9 @@
         "chromaSmoothness": 0.8866311879575336,
         "spacingUniformity": 0.7231824640607591,
         "hueStability": 0.9544243011896296,
-        "contrastEfficiency": 0.9473684210526315
+        "contrastEfficiency": 0.9430625957797949
       },
-      "score": 87.76,
+      "score": 87.68,
       "wcag": {
         "30": {
           "efficiency": 0.4117647058823529,
@@ -1114,9 +1114,9 @@
         "chromaSmoothness": 0.773625129884159,
         "spacingUniformity": 0.8214887221581786,
         "hueStability": 0.9683062569133486,
-        "contrastEfficiency": 0.9473684210526315
+        "contrastEfficiency": 0.9430625957797949
       },
-      "score": 89.3,
+      "score": 89.22,
       "wcag": {
         "30": {
           "efficiency": 0.4117647058823529,
@@ -1246,9 +1246,9 @@
         "chromaSmoothness": 1,
         "spacingUniformity": 0.7424660186189583,
         "hueStability": 1,
-        "contrastEfficiency": 0.9473684210526315
+        "contrastEfficiency": 0.9430625957797949
       },
-      "score": 92.79,
+      "score": 92.71,
       "wcag": {
         "30": {
           "efficiency": 0.4117647058823529,

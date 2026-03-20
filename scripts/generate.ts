@@ -3,40 +3,9 @@ import path from "path";
 import { pathToFileURL } from "url";
 import { chartsPNG } from "./charts-png.js";
 
-import { Ramp, calcScore, rootMeanSquare, type WcagContrasts } from "../src/index.js";
+import { Palette } from "../src/index.js";
 
 const BENCH_BASE = path.resolve("benchmark");
-
-function getPaletteMetrics(ramps: Ramp[]) {
-    return {
-        contrastEfficiency: rootMeanSquare(ramps.map((ramp) => ramp.contrastEfficiency)),
-        lightnessLinearity: rootMeanSquare(ramps.map((ramp) => ramp.lightnessLinearity)),
-        chromaSmoothness: rootMeanSquare(ramps.map((ramp) => ramp.chromaSmoothness)),
-        hueStability: rootMeanSquare(ramps.map((ramp) => ramp.hueStability)),
-        spacingUniformity: rootMeanSquare(ramps.map((ramp) => ramp.spacingUniformity)),
-    };
-}
-
-function getPaletteWcag(ramps: Ramp[]): WcagContrasts {
-    const contrasts = {} as WcagContrasts;
-
-    for (const level of [30, 45, 70] as const) {
-        const rampContrasts = ramps.map((ramp) => ramp.wcag[level]);
-        const steps = ramps[0]?.steps || 0;
-        const span = Math.max(0, ...rampContrasts.map((contrast) => contrast?.span || 0));
-        const sum = rampContrasts.reduce((acc, contrast) => acc + (contrast?.value || 0), 0);
-        const sample = rampContrasts[0];
-
-        contrasts[level] = {
-            target: sample?.target || 0,
-            span,
-            value: sum / (ramps.length || 1),
-            efficiency: span / (steps - 1 || 1),
-        };
-    }
-
-    return contrasts;
-}
 
 async function generatePalettes() {
     const INPUT_DIR = path.join(BENCH_BASE, "input");
@@ -59,18 +28,21 @@ async function generatePalettes() {
     );
 
     const palettes = PALETTES.map((pal) => {
-        const ramps = Object.entries(pal.colors).map(([rampName, rampColors]) => new Ramp(rampColors, rampName));
-        const name = pal.name ?? "palette";
-        const steps = ramps[0]?.steps || 0;
-        const metrics = getPaletteMetrics(ramps);
+        const palette = new Palette(pal.colors, pal.name);
 
         const data = {
-            steps,
-            name,
-            metrics,
-            score: calcScore(Object.values(metrics)),
-            wcag: getPaletteWcag(ramps),
-            ramps: ramps.map((ramp) => ({
+            steps: palette.steps,
+            name: palette.name,
+            metrics: {
+                contrastEfficiency: palette.contrastEfficiency,
+                lightnessLinearity: palette.lightnessLinearity,
+                chromaSmoothness: palette.chromaSmoothness,
+                hueStability: palette.hueStability,
+                spacingUniformity: palette.spacingUniformity,
+            },
+            score: palette.score,
+            wcag: palette.wcag,
+            ramps: palette.ramps.map((ramp) => ({
                 name: ramp.name,
                 baseIndex: ramp.baseIndex,
                 colors: ramp.colors,
@@ -86,7 +58,7 @@ async function generatePalettes() {
             })),
         };
 
-        const fileName = `${name.toLowerCase().replace(/\s+/g, "-")}.json`;
+        const fileName = `${palette.name.toLowerCase().replace(/\s+/g, "-")}.json`;
         fs.writeFileSync(path.join(PALETTES_DIR, fileName), JSON.stringify(data, null, 2));
         console.log(`Generated ${pal.name}...`);
         return data;

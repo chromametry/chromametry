@@ -90,4 +90,21 @@ declare class Ramp {
     get score(): number;
 }
 
-export { type ApcaContrasts, type ContrastValue, Ramp, Swatch, type WcagContrasts, calcDeltaE2000, calcScore, calcStatistics, createMonotone, cssRgbToRgb, fromLightnessEAL, hexToRgb, labToLch, labToRgb, lchToLab, rgbToHex, rgbToLab, rootMeanSquare, toLightnessEAL };
+type PaletteColors = Record<string, string[]>;
+declare class Palette {
+    ramps: Ramp[];
+    name: string;
+    constructor(colors?: PaletteColors, name?: string);
+    get colors(): PaletteColors;
+    get steps(): number;
+    get wcag(): WcagContrasts;
+    get apca(): ApcaContrasts;
+    get contrastEfficiency(): number;
+    get lightnessLinearity(): number;
+    get chromaSmoothness(): number;
+    get hueStability(): number;
+    get spacingUniformity(): number;
+    get score(): number;
+}
+
+export { type ApcaContrasts, type ContrastValue, Palette, type PaletteColors, Ramp, Swatch, type WcagContrasts, calcDeltaE2000, calcScore, calcStatistics, createMonotone, cssRgbToRgb, fromLightnessEAL, hexToRgb, labToLch, labToRgb, lchToLab, rgbToHex, rgbToLab, rootMeanSquare, toLightnessEAL };

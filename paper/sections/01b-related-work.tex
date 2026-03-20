@@ -1,0 +1,54 @@
+\section{Related Work}
+
+\subsection{Color Palette Generation}
+
+Early work on systematic palette construction focused on perceptual
+uniformity in color space selection. Zeileis et al.~\cite{zeileis2009}
+proposed HCL-based palettes for statistical graphics, emphasizing
+perceptual linearity over aesthetics. Gramazio et al.~\cite{gramazio2017}
+introduced \emph{Colorgorical}, a palette generation model that jointly
+optimizes perceptual discriminability and aesthetic preference, establishing
+discriminability and preference as dual axes of palette quality.
+Stone et al.~\cite{stone2014} examined how step count and lightness range
+interact in sequential palettes, an observation that motivates our
+analysis of even-step advantages in contrast span.
+
+\subsection{Color in Design Systems}
+
+Norman et al.~\cite{norman2024} conducted a qualitative study of
+professional designer workflows, identifying three interlinked design spaces:
+purpose, palette, and prototype. Their findings motivate computational
+scoring that targets purpose-driven constraints (accessibility) rather than
+aesthetic preference alone. Color Builder~\cite{colorbuilder2019} provided
+a direct-manipulation interface for theme construction but offered no
+quantitative quality criteria for the resulting palettes.
+
+\subsection{Color Theme Evaluation}
+
+Yang et al.~\cite{yang2024} proposed a computational model for scoring
+color themes through user preference modelling (ACM TAP, 2024).
+While the most closely related work in spirit, their approach is
+\emph{subjective}—trained on perceptual ratings—and evaluates
+multi-color palettes as sets. By contrast, our framework is
+\emph{objective}, grounded in geometric properties of the continuous
+parametric curve underlying a single-hue ramp, and targets design-system
+scalability rather than global aesthetic appeal.
+
+\subsection{Accessibility Metrics}
+
+Existing accessibility evaluation follows WCAG~2.1~\cite{wcag21} contrast
+ratio thresholds, which are applied pairwise and do not characterize
+palette-level accessibility structure. Prior tools check compliance
+post-hoc rather than guiding generation. Our contrast efficiency metric
+$\eta$ reformulates accessibility as a structural property of the ramp,
+quantifying how economically the required contrast separation is achieved
+across the full step range.
+
+\subsection{Positioning}
+
+No prior work, to our knowledge, addresses the problem of scoring a
+\emph{single base color's capacity} to generate an accessible, perceptually
+coherent sequential scale across industry-standard step counts—a requirement
+specific to design token systems. The proposed framework fills this gap by
+combining perceptual geometry, accessibility constraints, and
+continuous-curve evaluation into a unified, steps-independent score.
