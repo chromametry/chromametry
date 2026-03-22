@@ -10,12 +10,8 @@ const BENCH_BASE = path.resolve("benchmark");
 async function generatePalettes() {
     const INPUT_DIR = path.join(BENCH_BASE, "input");
     const OUTPUT_DIR = path.join(BENCH_BASE, "output");
-    const PALETTES_DIR = path.join(OUTPUT_DIR, "palettes");
 
-    if (fs.existsSync(PALETTES_DIR)) {
-        fs.rmSync(PALETTES_DIR, { recursive: true, force: true });
-    }
-    fs.mkdirSync(PALETTES_DIR, { recursive: true });
+    fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 
     const files = fs.readdirSync(INPUT_DIR).filter((f) => f.endsWith(".ts"));
 
@@ -58,14 +54,20 @@ async function generatePalettes() {
             })),
         };
 
-        const fileName = `${palette.name.toLowerCase().replace(/\s+/g, "-")}.json`;
-        fs.writeFileSync(path.join(PALETTES_DIR, fileName), JSON.stringify(data, null, 2));
         console.log(`Generated ${pal.name}...`);
         return data;
     });
 
-    fs.writeFileSync(path.join(OUTPUT_DIR, "data.json"), JSON.stringify(palettes, null, 2));
     fs.writeFileSync(path.join(OUTPUT_DIR, "data.js"), `window.BENCHMARK_DATA = ${JSON.stringify(palettes)};`);
+
+    const distDir = path.resolve("dist");
+    if (fs.existsSync(distDir)) {
+        const raw = palettes.map((d: any) => ({
+            name: d.name,
+            colors: Object.fromEntries(d.ramps.map((r: any) => [r.name, r.colors])),
+        }));
+        fs.writeFileSync(path.join(distDir, "palettes.js"), `export default ${JSON.stringify(raw)};`);
+    }
     return palettes;
 }
 

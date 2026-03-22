@@ -23,17 +23,17 @@
 Comparison of popular design systems based on Chromametry metrics.
 | Design System          | Steps | Span (K) | Contrast Efficiency | Lightness Linearity | Chroma Smoothness | Hue Stability | Spacing Uniformity | **SCORE** |
 | :--------------------- | :---: | :------: | :-----------------: | :-----------------: | :---------------: | :-----------: | :----------------: | :-------: |
-| Adobe Spectrum         |   18  |     9    |        0.947        |        0.9333       |       0.8786      |     0.9138    |       0.7722       | **88.67** |
-| IBM Carbon             |   12  |     6    |        0.923        |        0.9303       |       0.8688      |     0.9252    |       0.7919       | **88.62** |
-| U.S. Web Design System |   12  |     6    |        0.923        |        0.9359       |       0.8096      |     0.9380    |       0.7997       | **87.90** |
-| Salesforce Lightning 2 |   14  |     7    |        0.933        |        0.9187       |       0.8464      |     0.9372    |       0.7107       | **86.47** |
-| GitHub Primer Brand    |   12  |     6    |        0.923        |        0.9243       |       0.8405      |     0.9408    |       0.6841       | **85.67** |
-| Atlassian              |   14  |     8    |        0.800        |        0.8964       |       0.9094      |     0.9465    |       0.7129       | **84.86** |
-| Tailwind CSS           |   13  |     8    |        0.789        |        0.8705       |       0.8565      |     0.9147    |       0.6780       | **81.74** |
-| Ant Design             |   12  |     9    |        0.711        |        0.8586       |       0.8734      |     0.9276    |       0.6550       | **79.81** |
-| Material UI            |   12  |    11    |        0.565        |        0.7967       |       0.7861      |     0.9239    |       0.5500       | **70.95** |
-| Radix UI               |   13  |    10    |        0.543        |        0.7979       |       0.7679      |     0.9481    |       0.5207       | **69.67** |
-| Shopify Polaris        |   17  |    15    |        0.356        |        0.7281       |       0.6892      |     0.9223    |       0.4667       | **59.86** |
+| Adobe Spectrum         |   18  |     9    |        0.9431       |        0.9333       |       0.8786      |     0.9138    |       0.7722       | **88.59** |
+| IBM Carbon             |   12  |     6    |        0.9109       |        0.9303       |       0.8688      |     0.9288    |       0.7919       | **88.46** |
+| U.S. Web Design System |   12  |     6    |        0.9109       |        0.9359       |       0.8096      |     0.9380    |       0.7997       | **87.67** |
+| Salesforce Lightning 2 |   14  |     7    |        0.9249       |        0.9187       |       0.8464      |     0.9372    |       0.7107       | **86.31** |
+| GitHub Primer Brand    |   12  |     6    |        0.9109       |        0.9243       |       0.8405      |     0.9408    |       0.6841       | **85.45** |
+| Atlassian              |   14  |     8    |        0.7708       |        0.8964       |       0.9094      |     0.9465    |       0.7129       | **84.23** |
+| Tailwind CSS           |   13  |     8    |        0.7561       |        0.8705       |       0.8565      |     0.9147    |       0.6780       | **81.04** |
+| Ant Design             |   12  |     9    |        0.6652       |        0.8586       |       0.8734      |     0.9276    |       0.6550       | **78.76** |
+| Material UI            |   12  |    11    |        0.5067       |        0.7967       |       0.7861      |     0.9239    |       0.5500       | **69.43** |
+| Radix UI               |   13  |    10    |        0.4742       |        0.7979       |       0.7679      |     0.9468    |       0.5207       | **67.80** |
+| Shopify Polaris        |   17  |    15    |        0.2824       |        0.7281       |       0.6892      |     0.9223    |       0.4667       | **57.16** |
 
 
 
@@ -42,7 +42,7 @@ Comparison of popular design systems based on Chromametry metrics.
 
 > **Note:** Design systems like Bootstrap,Google Material 3, Apple Human Interface or Fluent UI are excluded as they define discrete semantic tokens rather than algorithmic sequential ramps.
 
-> **Overall Score** is computed as the weighted mean of the five normalized metrics, using equal weights by default.
+> **Overall Score** is computed as the geometric mean of the five normalized metrics.
 
 ### Example: A Typical Report
 
