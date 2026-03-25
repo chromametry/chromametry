@@ -1,19 +1,22 @@
 \subsection{Contrast Efficiency ($\eta$)}
 \label{subsec:contrast-efficiency}
 
-Contrast Efficiency evaluates the economy of index separation required to satisfy accessibility constraints. To establish an ideal upper bound for accessibility, this framework references a \textbf{neutral gray ramp} ($a^* = 0, b^* = 0$).
+Contrast Efficiency evaluates the economy of index separation required to satisfy accessibility constraints. To establish a \textbf{reference baseline} for accessibility, this framework derives the minimum lightness fraction needed for WCAG compliance from a \textbf{neutral gray ramp} ($a^* = 0, b^* = 0$).
 
-The choice of an achromatic scale is motivated by its inherent stability: neutral colors provide the most direct mapping between relative luminance $Y$ and perceived lightness $L^*$, as they are unaffected by the Helmholtz--Kohlrausch effect—where high chroma increases perceived brightness despite constant luminance~\cite{high2023}. Furthermore, neutral scales occupy the achromatic axis of the color gamut, minimizing non-linearities induced by gamut mapping constraints common in highly saturated hues.
+The choice of an achromatic scale as reference is motivated by its analytical tractability: neutral colors provide the most direct mapping between relative luminance $Y$ and perceived lightness $L^*$, as they are unaffected by the Helmholtz--Kohlrausch effect---where high chroma increases perceived brightness despite constant luminance~\cite{high2023}. Furthermore, neutral scales occupy the achromatic axis of the color gamut, minimizing non-linearities induced by gamut mapping constraints common in highly saturated hues. Because the WCAG contrast ratio depends solely on relative luminance (not on chrominance), the achromatic derivation yields a $\lambda$ value that applies to any hue family whose lightness-to-luminance mapping is monotonic---a condition satisfied by all well-formed sequential ramps within the sRGB gamut.
 
 In this ideal achromatic case, $L^*$ is related to relative luminance $Y \in [0,1]$ by the CIE 1976 transform~\cite{iso11664}:
 
 \[
 L^*(Y) =
 \begin{cases}
-116\,Y^{1/3} - 16, & Y > \left(\frac{6}{29}\right)^3 \\
-116 \left(\frac{29}{6}\right)^2 Y + 16, & Y \le \left(\frac{6}{29}\right)^3
+116\,Y^{1/3} - 16, & Y > \left(\dfrac{6}{29}\right)^3 \\[6pt]
+\dfrac{116}{3}\left(\dfrac{29}{6}\right)^2 Y, & Y \le \left(\dfrac{6}{29}\right)^3
 \end{cases}
 \]
+
+\noindent
+In the linear branch, the additive constants cancel: $116 \cdot \frac{4}{29} - 16 = 0$, yielding the simplified form $L^* \approx 903.3\,Y$.
 
 Applying the WCAG 4.5:1 boundary conditions:
 \begin{itemize}

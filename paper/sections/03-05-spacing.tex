@@ -29,6 +29,15 @@ monotonic transform:
 \mathcal{U} = \frac{1}{1 + CV}.
 \end{equation}
 
+This particular transform is chosen over alternatives (e.g., $e^{-CV}$
+or $1 - \tanh(CV)$) for three reasons:
+(i)~it maps $[0,\infty) \to (0,1]$ with a closed-form inverse
+($CV = 1/\mathcal{U} - 1$), making the score directly interpretable;
+(ii)~it is parameter-free, avoiding arbitrary tuning constants; and
+(iii)~its gradient $-1/(1+CV)^2$ provides moderate sensitivity across
+the empirically observed range $CV \in [0.3, 1.5]$ without saturating
+prematurely.
+
 This definition ensures $\mathcal{U} \in (0,1]$, with
 $\mathcal{U} = 1$ corresponding to perfectly uniform spacing ($CV = 0$),
 and $\mathcal{U}$ decreasing monotonically as dispersion increases.

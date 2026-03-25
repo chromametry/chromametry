@@ -34,5 +34,19 @@ Since all component metrics are bounded in $[0,1]$, the resulting SCORE is
 guaranteed to lie in the interval $[0,100]$, enabling direct and intuitive
 comparison across different palette generation methods.
 
+\paragraph{Equal weighting.}
+The five metrics are weighted equally in the current formulation.
+This choice reflects two considerations:
+(i)~each metric captures a structurally independent dimension of palette
+quality---contrast, lightness, chroma, hue, and spacing---with no a~priori
+reason to privilege one over another in a general-purpose evaluation; and
+(ii)~the geometric mean already imposes a strong implicit penalty on weak
+dimensions, making explicit weighting less critical than in an arithmetic
+aggregation.
+Domain-specific applications (e.g., accessibility-first tools, data
+visualization) may benefit from weighted variants; however, determining
+principled weights would require empirical user studies that are beyond
+the scope of this work.
+
 Accordingly, SCORE reflects overall palette completeness rather than excellence
 in any single isolated attribute.

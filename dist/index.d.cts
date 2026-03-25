@@ -2,6 +2,12 @@
 declare const rgbToHex: (rgb: number[]) => string;
 /** Convert sRGB Hex string to linear RGB. */
 declare const hexToRgb: (hex: string) => number[];
+/** Converts linear RGB to Oklab color space. */
+/** Specification: Björn Ottosson (2020). */
+declare const rgbToOklab: (rgb: number[]) => number[];
+/** Converts Oklab color space to linear RGB. */
+/** Specification: Björn Ottosson (2020). */
+declare const oklabToRgb: (lab: number[]) => number[];
 /** Calculate Equivalent Achromatic Lightness (L_EAL) using High et al. (2023). */
 declare const toLightnessEAL: (lab: number[]) => number;
 /** Reverse L_EAL to get CIELAB Lightness (L). */
@@ -107,4 +113,4 @@ declare class Palette {
     get score(): number;
 }
 
-export { type ApcaContrasts, type ContrastValue, Palette, type PaletteColors, Ramp, Swatch, type WcagContrasts, calcDeltaE2000, calcScore, calcStatistics, createMonotone, cssRgbToRgb, fromLightnessEAL, hexToRgb, labToLch, labToRgb, lchToLab, rgbToHex, rgbToLab, rootMeanSquare, toLightnessEAL };
+export { type ApcaContrasts, type ContrastValue, Palette, type PaletteColors, Ramp, Swatch, type WcagContrasts, calcDeltaE2000, calcScore, calcStatistics, createMonotone, cssRgbToRgb, fromLightnessEAL, hexToRgb, labToLch, labToRgb, lchToLab, oklabToRgb, rgbToHex, rgbToLab, rgbToOklab, rootMeanSquare, toLightnessEAL };

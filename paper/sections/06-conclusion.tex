@@ -25,10 +25,33 @@ isolated excellence. As a result, the framework supports reproducible
 benchmarking, automated palette validation, and optimization-driven color
 system design.
 
-This study focuses on monochromatic sequential color ramps and adopts the
-CIELAB color space as a unified evaluation domain, ensuring direct
-compatibility with the CIEDE2000 color-difference metric used for perceptual
-uniformity assessment. Future work will extend the framework to diverging and
+\subsection{Limitations}
+
+Several limitations should be acknowledged.
+First, while CIELAB is widely adopted as a standard perceptual color space,
+it exhibits known non-uniformities---particularly in the blue
+region~\cite{luo2001}---that may affect chroma and hue measurements for
+certain hue families. More recent color appearance models such as
+CAM16 or perceptually uniform spaces like Oklab~\cite{safdar2017} may offer
+improved uniformity, though at the cost of reduced compatibility with the
+CIEDE2000 metric.
+Second, the framework evaluates only \emph{sequential monochromatic} ramps
+and does not address diverging, categorical, or multi-hue palettes, which
+require fundamentally different structural assumptions.
+Third, the five proposed metrics carry equal weight in the geometric mean
+composite score; domain-specific applications may benefit from weighted
+aggregation, though determining appropriate weights would require empirical
+user studies beyond the scope of this work.
+Finally, the benchmark evaluation is limited to design systems that publish
+algorithmically constructed sequential ramps; systems relying on hand-picked
+semantic tokens were excluded, which may limit generalizability.
+
+\subsection{Future Work}
+
+Future work will extend the framework to diverging and
 multivariate palettes, and investigate how analogous metric formulations may
 be adapted to alternative perceptually uniform color spaces (e.g., CAM02-UCS
 or CAM16) while preserving cross-space comparability.
+Empirical validation through user studies comparing metric rankings with
+human preference judgments would further strengthen the framework's
+applicability.

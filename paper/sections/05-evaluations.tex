@@ -40,36 +40,49 @@ constructed sequential color ramps.
 \centering
 \includegraphics[width=\linewidth]{figures/adobe-spectrum-color-palette.png}
 \caption{Adobe Spectrum Color Palette. Cell value = Background Index $\pm 9$ steps (WCAG 4.5:1).}
+\label{fig:adobe-palette}
 \end{figure}
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\linewidth]{figures/adobe-spectrum-palette-metrics.png}
-\caption{Adobe Spectrum Palette Metrics.}
+\caption{Adobe Spectrum Palette Metrics. Each radar axis corresponds to one of the five normalized metrics ($\eta$, $\mathcal{L}$, $\mathcal{S}_C$, $\mathcal{H}$, $\mathcal{U}$).}
+\label{fig:adobe-metrics}
 \end{figure}
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\linewidth]{figures/adobe-spectrum-chart-lightness.png}
-\caption{Adobe Spectrum Lightness Chart.}
+\caption{Adobe Spectrum: Helmholtz--Kohlrausch corrected lightness ($L_{\mathrm{EAL}}$) vs.\ step index, with least-squares linear fit overlay.}
+\label{fig:adobe-lightness}
 \end{figure}
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\linewidth]{figures/adobe-spectrum-chart-chroma.png}
-\caption{Adobe Spectrum Chroma Chart.}
+\caption{Adobe Spectrum: Normalized chroma trajectory vs.\ monotone cubic spline reference.}
+\label{fig:adobe-chroma}
 \end{figure}
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\linewidth]{figures/adobe-spectrum-chart-hue.png}
-\caption{Adobe Spectrum Hue Chart.}
+\caption{Adobe Spectrum: Unwrapped hue angle across inner ramp steps, showing deviation from the base hue.}
+\label{fig:adobe-hue}
 \end{figure}
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\linewidth]{figures/adobe-spectrum-chart-cumDeltaE00.png}
-\caption{Adobe Spectrum Cumilatiive DeltaE2000 Chart.}
+\caption{Adobe Spectrum: Cumulative $\Delta E_{00}$ curve. A linear trajectory indicates uniform perceptual spacing.}
+\label{fig:adobe-deltae}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/web-accessible-palette-ranking.png}
+\caption{Composite score ranking of eleven evaluated design systems. Higher scores indicate stronger overall balance across all five metrics.}
+\label{fig:ranking}
 \end{figure}
 
 The contrast span value $K$ is taken directly from measured \emph{Span}.

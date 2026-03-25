@@ -1,6 +1,6 @@
 {
   "name": "chromametry",
-  "version": "0.3.3",
+  "version": "0.3.6",
   "description": "Web-accessible Color Palette Metrics",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -18,7 +18,7 @@
     "test": "vitest",
     "generate": "tsx scripts/generate.ts",
     "build": "tsup",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build && npm run generate"
   },
   "keywords": [
     "color",

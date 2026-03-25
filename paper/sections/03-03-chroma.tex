@@ -65,16 +65,36 @@ The rescaled chroma used for smoothness evaluation is
 \tilde C_i = \frac{C^*_i}{C^*_{\max}} \cdot C^*_{\mathrm{ref}} .
 \end{equation}
 
-Evaluating primary and secondary vertices of the sRGB cube shows that the maximum chroma
+Evaluating primary and secondary vertices of the sRGB cube (Table~\ref{tab:chroma-ref}) shows that the maximum chroma
 occurs at the blue primary, yielding
 \begin{equation}
 C^*_{\mathrm{ref}} \approx 133.8 .
 \end{equation}
 
+\input{tables/chroma-max}
+
+\noindent
+The reference is derived from the sRGB gamut because it remains the
+dominant color space for web content delivery~\cite{srgb}.
+For wide-gamut displays (e.g., Display~P3), $C^*_{\mathrm{ref}}$ would
+increase, but because chroma enters the metric only as a \emph{ratio}
+$C^*_i / C^*_{\max}$ that is subsequently rescaled, the smoothness score
+depends on the \emph{shape} of the chroma curve rather than its absolute
+magnitude. Replacing $C^*_{\mathrm{ref}}$ with a P3-derived value would
+therefore affect only palettes whose peak chroma exceeds the sRGB boundary,
+leaving the vast majority of current design-system palettes unaffected.
+
 \subsubsection{Ideal Chroma Trajectory}
 
 An ideal chroma trajectory is assumed to increase monotonically from the palette start,
 reach a single maximum, and then decrease monotonically toward the end.
+This unimodal assumption follows directly from the structure of
+sequential ramps anchored at white and black: both endpoints have
+$C^* = 0$ by definition, so chroma must rise and fall at least once.
+A single peak is the simplest such trajectory and matches the
+design intent of monochromatic families, where the ``brand color''
+(maximum saturation) occupies the mid-range while extremes fade
+toward the achromatic anchors~\cite{zeileis2009}.
 For a discrete palette of $N$ colors indexed by $i = 0,\dots,N-1$, the ideal trajectory
 $C_{\mathrm{ideal}}(i)$ is constructed using a \emph{monotonic cubic spline}~\cite{fritsch1980}
 passing through three anchors:

@@ -1,7 +1,6 @@
 import fs from "fs";
 import path from "path";
 import { pathToFileURL } from "url";
-import { chartsPNG } from "./charts-png.js";
 
 import { Palette } from "../src/index.js";
 
@@ -74,7 +73,12 @@ async function generatePalettes() {
 export async function generate() {
     try {
         const data = await generatePalettes();
-        await chartsPNG(data[0]);
+        try {
+            const { chartsPNG } = await import("./charts-png.js");
+            await chartsPNG(data[0]);
+        } catch {
+            // chartsPNG requires native canvas — skip if unavailable
+        }
         console.log("\nBenchmark complete");
     } catch (error) {
         console.error(error);

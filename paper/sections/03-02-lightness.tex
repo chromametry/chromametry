@@ -2,7 +2,21 @@
 
 The \textbf{Lightness Linearity} metric evaluates the degree to which
 \emph{perceptual} lightness progression in a palette follows a linear
-trend with step index. Unlike pure $L^*$, lightness is affected by the
+trend with step index.
+
+\subsubsection{Motivation}
+
+A linear lightness trajectory is desirable for two reasons.
+First, it ensures that the perceptual distance between any two steps
+separated by the same index gap $k$ remains approximately constant,
+which is a prerequisite for predictable contrast pairing
+(cf.\ the contrast span $K$ in Section~\ref{subsec:contrast-efficiency}).
+Second, non-linear progressions---such as lightness
+plateaus or abrupt jumps---produce uneven visual weight when palette
+steps are mapped to sequential data or UI surfaces, undermining the
+ordinal semantics that sequential palettes are designed to convey~\cite{zeileis2009}.
+
+Unlike pure $L^*$, lightness is affected by the
 Helmholtz--Kohlrausch effect~\cite{high2023}, where high-chroma colors
 are perceived as lighter than achromatic colors with the same $L^*$.
 
